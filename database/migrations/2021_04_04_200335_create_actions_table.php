@@ -19,7 +19,7 @@ class CreateActionsTable extends Migration
             $table->string('title');
             $table->timestamps();
         });
-        Schema::create('action_orders', function (Blueprint $table) {
+        Schema::create('ordered_actions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('action_id');
             $table->unsignedBigInteger('order_id');
