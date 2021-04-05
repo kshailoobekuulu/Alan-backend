@@ -19,16 +19,6 @@ class CreateBannersTable extends Migration
             $table->string('title');
             $table->timestamps();
         });
-        Schema::create('banner_photos', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('banner_id');
-            $table->unsignedBigInteger('photo_id');
-            $table->timestamps();
-
-            $table->unique('banner_id','photo_id');
-            $table->foreign('banner_id')->references('id')->on('banners')->onDelete('cascade');
-            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
-        });
     }
 
     /**
