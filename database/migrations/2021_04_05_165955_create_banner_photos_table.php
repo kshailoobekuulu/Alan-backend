@@ -14,12 +14,11 @@ class CreateBannerPhotosTable extends Migration
     public function up()
     {
         Schema::create('banner_photos', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('banner_id');
             $table->unsignedBigInteger('photo_id');
             $table->timestamps();
 
-            $table->unique('banner_id','photo_id');
+            $table->primary(['banner_id','photo_id']);
             $table->foreign('banner_id')->references('id')->on('banners')->onDelete('cascade');
             $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
         });
