@@ -1,0 +1,85 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Project_Alan API documentation example",
+        "contact": {
+            "email": "aldaberdiev99@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Laravel Swagger API server"
+        }
+    ],
+    "paths": {
+        "/actions": {
+            "get": {
+                "tags": [
+                    "Actions"
+                ],
+                "summary": "Display a action of the resource",
+                "operationId": "examplesAll",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "X-APP-ID": {
+                "type": "apiKey",
+                "name": "X-APP-ID",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Products",
+            "description": "Products list"
+        },
+        {
+            "name": "Actions",
+            "description": "Actions list"
+        },
+        {
+            "name": "Categories",
+            "description": "Categories list"
+        },
+        {
+            "name": "Orders",
+            "description": "Orders list"
+        },
+        {
+            "name": "Banners",
+            "description": "Banners list"
+        },
+        {
+            "name": "Photos",
+            "description": "Photos list"
+        }
+    ],
+    "security": [
+        []
+    ]
+}
