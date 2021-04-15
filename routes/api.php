@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\ExController;
+use \App\Http\Controllers\API\ExController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,15 +15,12 @@ use \App\Http\Controllers\ExController;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-//Route::resource('examples',[ExController::class]);
-//Route::resource('actions',App\Http\Controllers\API\EController::class);
+Route::apiResource('actions',ExController::class);
+//Route::('actions',App\Http\Controllers\API\EController::class);
 
-Route::get('/',function (){
-//   dump(DB::select('select * from `action_products`'));
-    $arr=\App\Models\Action::find(2);
-    dump($arr->products);
-//    dump(DB::select('select * from `action_products` where `action_id`=2'));
-});
+//Route::get('/',function (){
+////   dump(DB::select('select * from `action_products`'));
+//    $arr=\App\Models\Action::find(2);
+//    dump($arr->products);
+////    dump(DB::select('select * from `action_products` where `action_id`=2'));
+//});
