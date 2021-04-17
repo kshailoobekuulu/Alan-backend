@@ -11,6 +11,6 @@ class Banner extends Model
     protected $guarded=[];
 
     public function photos(){
-        return $this->belongsToMany(Photo::class)->withTimestamps;
+        return $this->belongsToMany(Photo::class,'banner_photos')->withTimestamps();
     }
 }

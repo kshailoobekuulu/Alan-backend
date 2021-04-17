@@ -11,9 +11,9 @@ class Order extends Model
     protected $guarded=[];
 
     public function products(){
-        $this->belongsToMany(Product::class)->withTimestamps;
+       return $this->belongsToMany(Product::class,'ordered_products')->withTimestamps();
     }
     public function actions(){
-        $this->belongsToMany(Action::class)->withTimestamps;
+       return $this->belongsToMany(Action::class,'ordered_actions')->withTimestamps();
     }
 }

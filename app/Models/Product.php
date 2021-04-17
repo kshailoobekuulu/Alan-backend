@@ -12,13 +12,12 @@ class Product extends Model
 
     public function categories()
     {
-       return $this->belongsToMany(Category::class)->withTimestamps;
+       return $this->belongsToMany(Category::class,'product_categories')->withTimestamps();
     }
     public function actions(){
-       return $this->belongsToMany(Action::class,'action_products','action_id','product_id');
+       return $this->belongsToMany(Action::class,'action_products')->withTimestamps();
     }
     public function orders(){
-        return $this->belongsToMany(Order::class)->withTimestamps;
-//       return $this->belongsToMany(Order::class)->withTimestamps;
+        return $this->belongsToMany(Order::class,'ordered_products')->withTimestamps();
     }
 }

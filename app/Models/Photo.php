@@ -12,6 +12,6 @@ class Photo extends Model
 
 
     public function banners(){
-        $this->belongsToMany(Banner::class)->withTimestamps;
+       return $this->belongsToMany(Banner::class,'banner_photos')->withTimestamps();
     }
 }

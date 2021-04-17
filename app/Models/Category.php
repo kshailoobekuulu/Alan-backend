@@ -11,6 +11,6 @@ class Category extends Model
     protected $guarded=[];
 
     public function products(){
-        $this->belongsToMany(Product::class)->withTimestamps;
+       return $this->belongsToMany(Product::class,'product_categories')->withTimestamps();
     }
 }
