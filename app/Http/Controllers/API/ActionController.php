@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExampleStoreRequest;
+use App\Http\Resources\ActionResource;
 use App\Models\Action;
 use http\Env\Response;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class ExController extends Controller
+class ActionController extends Controller
 {
 
     /**
@@ -49,7 +51,7 @@ class ExController extends Controller
     public function index()
     {
 //        return Action::query()->paginate(6);
-        return Action::all();
+        return ActionResource::collection(Action::with('products','orders')->get());
     }
 
     /**
@@ -87,6 +89,7 @@ class ExController extends Controller
         $item=new Action();
         $item->fill($request->all());
         $item->save();
+//        return $request->all();
     }
 
     /**
@@ -123,8 +126,7 @@ class ExController extends Controller
      */
     public function show($id)
     {
-        $item=Action::findOrfail($id);
-        return response()->json($item);
+        return new ActionResource(Action::with('products')->findOrfail($id));
     }
 
     /**
@@ -206,6 +208,6 @@ class ExController extends Controller
     public function destroy($id)
     {
         Action::findOrFail($id)->delete();
-        return response(null, HttpResponse::HTTP_ACCEPTED);
+//        return response(null, HttpResponse::HTTP_ACCEPTED);
     }
 }
