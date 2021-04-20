@@ -19,8 +19,6 @@ class ActionResource extends JsonResource
             'price'=>$this->price,
             'title'=>$this->title,
             'created_at'=>$this->created_at,
-            'products'=>ActionProductResource::collection($this->products),
-            'orders'=>ActionOrderResource::collection($this->orders)
         ];
     }
 }

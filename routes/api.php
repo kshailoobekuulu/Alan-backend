@@ -13,5 +13,16 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('registration', 'AuthController@registration');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+});
 
 Route::apiResource('actions','API\ActionController');
+Route::get('actions/{action}/orders','API\ActionController@orders');
+Route::get('actions/{action}/products','API\ActionController@products');

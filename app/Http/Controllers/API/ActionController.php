@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExampleStoreRequest;
 use App\Http\Resources\ActionResource;
+use App\Http\Resources\OrderResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Action;
 use http\Env\Response;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +14,6 @@ use Illuminate\Http\Request;
 
 class ActionController extends Controller
 {
-
     /**
      * @OA\Get(
      *     path="/actions",
@@ -50,8 +51,85 @@ class ActionController extends Controller
      */
     public function index()
     {
-//        return Action::query()->paginate(6);
-        return ActionResource::collection(Action::with('products','orders')->get());
+        return ActionResource::collection(Action::get());
+    }
+    /**
+     * @OA\Get(
+     *     path="/actions/{id}/orders",
+     *     operationId="actionsOrders",
+     *     tags={"Actions"},
+     *     summary="Display all action orders",
+     *     security={
+     *       {"api_key": {}},
+     *     },
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="The ID of action",
+     *         required=true,
+     *         example="1",
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Everything is fine",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/ExampleShowRequest"),
+     *             )
+     *         )
+     *     ),
+     * )
+     *
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function orders($id){
+        return OrderResource::collection(Action::findOrFail($id)->orders);
+    }
+    /**
+     * @OA\Get(
+     *     path="/actions/{id}/products",
+     *     operationId="actionsProducts",
+     *     tags={"Actions"},
+     *     summary="Display all action products",
+     *     security={
+     *       {"api_key": {}},
+     *     },
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="The ID of action",
+     *         required=true,
+     *         example="1",
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Everything is fine",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/ExampleShowRequest"),
+     *             )
+     *         )
+     *     ),
+     * )
+     *
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function products($id){
+        return ProductResource::collection(Action::findOrFail($id)->products);
     }
 
     /**
@@ -61,6 +139,9 @@ class ActionController extends Controller
      * description="Store actions data",
      * operationId="actionStore",
      * tags={"Actions"},
+     * security={
+     *    {"api_key": {}},
+     * },
      * @OA\RequestBody(
      *    required=true,
      *    description="Pass action credentials",
@@ -91,6 +172,7 @@ class ActionController extends Controller
         $item->save();
 //        return $request->all();
     }
+//    there i have a few work
 
     /**
      * @OA\Get(
@@ -126,7 +208,7 @@ class ActionController extends Controller
      */
     public function show($id)
     {
-        return new ActionResource(Action::with('products')->findOrfail($id));
+        return new ActionResource(Action::findOrfail($id));
     }
 
     /**
