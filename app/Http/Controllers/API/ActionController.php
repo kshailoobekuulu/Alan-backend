@@ -51,7 +51,8 @@ class ActionController extends Controller
      */
     public function index()
     {
-        return ActionResource::collection(Action::get());
+//        return ActionResource::collection(Action::get());
+        return response()->json(Action::all(),200);
     }
     /**
      * @OA\Get(
@@ -90,7 +91,8 @@ class ActionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function orders($id){
-        return OrderResource::collection(Action::findOrFail($id)->orders);
+//        return OrderResource::collection(Action::findOrFail($id)->orders);
+        return response()->json(Action::findOrFail($id)->orders);
     }
     /**
      * @OA\Get(
@@ -129,7 +131,8 @@ class ActionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function products($id){
-        return ProductResource::collection(Action::findOrFail($id)->products);
+//        return ProductResource::collection(Action::findOrFail($id)->products);
+        return response()->json(Action::findOrFail($id)->products);
     }
 
     /**
@@ -170,7 +173,7 @@ class ActionController extends Controller
         $item=new Action();
         $item->fill($request->all());
         $item->save();
-//        return $request->all();
+        return response()->json('',200);
     }
 //    there i have a few work
 
@@ -208,7 +211,8 @@ class ActionController extends Controller
      */
     public function show($id)
     {
-        return new ActionResource(Action::findOrfail($id));
+//        return new ActionResource(Action::findOrfail($id));
+        return response()->json(Action::findOrFail($id));
     }
 
     /**
