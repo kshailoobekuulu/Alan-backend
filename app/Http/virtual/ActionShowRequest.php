@@ -2,11 +2,11 @@
 /**
  * @OA\Schema(
  *     type="object",
- *     title="Example showing request",
- *     description="Some simple request createa as example",
+ *     title="Action get example",
+ *     description="Some simple action example",
  * )
  */
-class ExampleShowRequest
+class ActionShowRequest
 {
     /**
      * @OA\Property(

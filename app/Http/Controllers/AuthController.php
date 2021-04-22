@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -46,6 +48,11 @@ class AuthController extends Controller
         $user->email = $email;
         $user->password = Hash::make($password);
         $user->save();
+//        User::create([
+//           'name'=>'Doolatbek',
+//           'email'=>'99@gmail.com',
+//           'password'=>Hash::make('doolat')
+//        ]);
 
         return response()->json(['message' => 'Successfully registration!']);
     }

@@ -11,7 +11,7 @@ class Action extends Model
     protected $guarded=[];
 
     public function products(){
-       return $this->belongsToMany(Product::class,'action_products')->withTimestamps();
+       return $this->belongsToMany(Product::class,'action_products')->withPivot('quantity');
     }
     public function orders(){
        return $this->belongsToMany(Order::class,'ordered_actions')->withTimestamps();

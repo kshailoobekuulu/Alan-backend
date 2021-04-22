@@ -3,11 +3,11 @@
 /**
  * @OA\Schema(
  *     type="object",
- *     title="Example storring request",
- *     description="Some simple request createa as action",
+ *     title="Category post example",
+ *     description="Some simple request createad as action",
  * )
  */
-class ExampleStoreRequest
+class CategoryStoreRequest
 {
     /**
      * @OA\Property(

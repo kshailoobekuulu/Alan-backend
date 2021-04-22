@@ -8,6 +8,7 @@ use App\Http\Resources\ActionResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Action;
+use App\Models\Product;
 use http\Env\Response;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class ActionController extends Controller
      *             mediaType="application/json",
      *             @OA\Schema(
      *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ExampleShowRequest"),
+     *                 @OA\Items(ref="#/components/schemas/ActionShowRequest"),
      *             )
      *         )
      *     ),
@@ -51,8 +52,8 @@ class ActionController extends Controller
      */
     public function index()
     {
-//        return ActionResource::collection(Action::get());
-        return response()->json(Action::all(),200);
+        return ActionResource::collection(Action::get());
+//        return response()->json(Action::all(),200);
     }
     /**
      * @OA\Get(
@@ -80,7 +81,7 @@ class ActionController extends Controller
      *             mediaType="application/json",
      *             @OA\Schema(
      *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ExampleShowRequest"),
+     *                 @OA\Items(ref="#/components/schemas/ActionShowRequest"),
      *             )
      *         )
      *     ),
@@ -91,8 +92,8 @@ class ActionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function orders($id){
-//        return OrderResource::collection(Action::findOrFail($id)->orders);
-        return response()->json(Action::findOrFail($id)->orders);
+        return OrderResource::collection(Action::findOrFail($id)->orders);
+//        return response()->json(Action::findOrFail($id)->orders);
     }
     /**
      * @OA\Get(
@@ -120,7 +121,7 @@ class ActionController extends Controller
      *             mediaType="application/json",
      *             @OA\Schema(
      *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ExampleShowRequest"),
+     *                 @OA\Items(ref="#/components/schemas/ActionShowRequest"),
      *             )
      *         )
      *     ),
@@ -131,8 +132,8 @@ class ActionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function products($id){
-//        return ProductResource::collection(Action::findOrFail($id)->products);
-        return response()->json(Action::findOrFail($id)->products);
+        return ProductResource::collection(Action::findOrFail($id)->products);
+//        return response()->json(Action::findOrFail($id)->products);
     }
 
     /**
@@ -168,12 +169,22 @@ class ActionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ExampleStoreRequest $request)
+    public function store()
     {
-        $item=new Action();
-        $item->fill($request->all());
-        $item->save();
-        return response()->json('',200);
+//        return \response()->json(request('products'));
+        $productsArray = [];
+        $action=new Action();
+        $action->fill(request(['price','title']));
+        $action->save();
+        foreach (request('products') as $product){;
+            $action->products()->attach([$product["id"] => ['quantity' => $product["quantity"]]]);
+        }
+        return response()->json('Successfully',200);
+        return $action;
+        foreach ($request->get('products') as $productId){
+            $productsArray[] = Product::findOrFail($productId);
+        }
+        return \response()->json($productsArray);
     }
 //    there i have a few work
 
@@ -199,7 +210,7 @@ class ActionController extends Controller
      *     @OA\Response(
      *         response="200",
      *         description="Everything is fine",
-     *         @OA\JsonContent(ref="#/components/schemas/ExampleShowRequest")
+     *         @OA\JsonContent(ref="#/components/schemas/ActionShowRequest")
      *     ),
      * )
      *
@@ -211,8 +222,8 @@ class ActionController extends Controller
      */
     public function show($id)
     {
-//        return new ActionResource(Action::findOrfail($id));
-        return response()->json(Action::findOrFail($id));
+        return (Action::findOrfail($id)->products);
+//        return response()->json(Action::findOrFail($id));
     }
 
     /**
@@ -237,11 +248,11 @@ class ActionController extends Controller
      *     @OA\Response(
      *         response="200",
      *         description="Everything is fine",
-     *         @OA\JsonContent(ref="#/components/schemas/ExampleShowRequest")
+     *         @OA\JsonContent(ref="#/components/schemas/ActionShowRequest")
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ExampleStoreRequest")
+     *         @OA\JsonContent(ref="#/components/schemas/ActionStoreRequest")
      *     ),
      * )
      *
@@ -294,6 +305,6 @@ class ActionController extends Controller
     public function destroy($id)
     {
         Action::findOrFail($id)->delete();
-//        return response(null, HttpResponse::HTTP_ACCEPTED);
+        return \response()->json('Deleted',202);
     }
 }

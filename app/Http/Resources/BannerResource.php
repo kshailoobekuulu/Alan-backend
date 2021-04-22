@@ -18,7 +18,8 @@ class BannerResource extends JsonResource
             'id'=>$this->id,
             'description'=>$this->description,
             'title'=>$this->title,
-            'created_at'=>$this->created_at
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at
         ];
     }
 }
