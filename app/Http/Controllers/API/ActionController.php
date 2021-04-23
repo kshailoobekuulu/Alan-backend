@@ -17,157 +17,63 @@ class ActionController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/actions",
-     *     operationId="actionsAll",
-     *     tags={"Actions"},
-     *     summary="Display all actions",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="The page number",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ActionShowRequest"),
-     *             )
-     *         )
-     *     ),
-     * )
-     *
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     *      path="/actions",
+     *      operationId="getActionsList",
+     *      tags={"Actions"},
+     *      summary="Get list of actions",
+     *      description="Returns list of actions",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ActionResource")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
      */
     public function index()
     {
-        return ActionResource::collection(Action::get());
+//        return \App\Virtual\Resources\ActionResource()->collection(Action::all());
 //        return response()->json(Action::all(),200);
-    }
-    /**
-     * @OA\Get(
-     *     path="/actions/{id}/orders",
-     *     operationId="actionsOrders",
-     *     tags={"Actions"},
-     *     summary="Display all action orders",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="The ID of action",
-     *         required=true,
-     *         example="1",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ActionShowRequest"),
-     *             )
-     *         )
-     *     ),
-     * )
-     *
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function orders($id){
-        return OrderResource::collection(Action::findOrFail($id)->orders);
-//        return response()->json(Action::findOrFail($id)->orders);
-    }
-    /**
-     * @OA\Get(
-     *     path="/actions/{id}/products",
-     *     operationId="actionsProducts",
-     *     tags={"Actions"},
-     *     summary="Display all action products",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="The ID of action",
-     *         required=true,
-     *         example="1",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ActionShowRequest"),
-     *             )
-     *         )
-     *     ),
-     * )
-     *
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function products($id){
-        return ProductResource::collection(Action::findOrFail($id)->products);
-//        return response()->json(Action::findOrFail($id)->products);
-    }
+        return ActionResource::collection(Action::with(['products'])->get());
+//        return new ActionResource(Action::findOrFail(2)->products);
 
+    }
     /**
      * @OA\Post(
-     * path="/actions",
-     * summary="Store actions data",
-     * description="Store actions data",
-     * operationId="actionStore",
-     * tags={"Actions"},
-     * security={
-     *    {"api_key": {}},
-     * },
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Pass action credentials",
-     *    @OA\JsonContent(
-     *       required={"price","title"},
-     *       @OA\Property(property="price", type="integer", example="20"),
-     *       @OA\Property(property="title", type="string", example="About actions"),
-     *    ),
-     * ),
-     * @OA\Response(
-     *    response=422,
-     *    description="Wrong credentials response",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
-     *        )
-     *     )
+     *      path="/actions",
+     *      operationId="storeAction",
+     *      tags={"Actions"},
+     *      summary="Store new action",
+     *      description="Returns action data",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/StoreActionRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Action")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
      * )
-     *
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store()
     {
@@ -190,35 +96,38 @@ class ActionController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/actions/{id}",
-     *     operationId="actionsGet",
-     *     tags={"Actions"},
-     *     summary="Get action by ID",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="The ID of action",
-     *         required=true,
-     *         example="1",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\JsonContent(ref="#/components/schemas/ActionShowRequest")
-     *     ),
+     *      path="/actions/{id}",
+     *      operationId="getActionById",
+     *      tags={"Actions"},
+     *      summary="Get action information",
+     *      description="Returns action data",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Action id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ActionResource")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
      * )
-     *
-     * Display a listing of the resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -228,40 +137,46 @@ class ActionController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/actions/{id}",
-     *     operationId="actionsUpdate",
-     *     tags={"Actions"},
-     *     summary="Update action by ID",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="The ID of actions",
-     *         required=true,
-     *         example="1",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\JsonContent(ref="#/components/schemas/ActionShowRequest")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ActionStoreRequest")
-     *     ),
+     *      path="/actions/{id}",
+     *      operationId="updateAction",
+     *      tags={"Actions"},
+     *      summary="Update existing action",
+     *      description="Returns updated action data",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Action id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/StoreActionRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=202,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Action")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
      * )
-     *
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {

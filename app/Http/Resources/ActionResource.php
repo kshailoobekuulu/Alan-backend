@@ -4,14 +4,26 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     title="ActionResource",
+ *     description="Action resource",
+ *     @OA\Xml(
+ *         name="ActionResource"
+ *     )
+ * )
+ */
 class ActionResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * @OA\Property(
+     *     title="Data",
+     *     description="Data wrapper"
+     * )
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @var \App\Virtual\Models\Action[]
      */
+    private $data;
     public function toArray($request)
     {
         return [
@@ -19,6 +31,8 @@ class ActionResource extends JsonResource
             'price'=>$this->price,
             'title'=>$this->title,
             'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
+            'products'=>ProductResource::collection($this->products)
         ];
     }
 }

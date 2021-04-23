@@ -12,24 +12,25 @@ class CategoryController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/categories",
-     *     operationId="categoriessAll",
-     *     tags={"Categories"},
-     *     summary="Display all Categories",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Response(
-     *         response="200",
-     *         description="Ok",
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryShowRequest")
-     *     ),
-     *     @OA\Response(response="404",description="Category not found")
-     * )
-     *
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     *      path="/categories",
+     *      operationId="getCategoriesList",
+     *      tags={"Categories"},
+     *      summary="Get list of categories",
+     *      description="Returns list of categories",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/CategoryResource")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
      */
     public function index()
     {
@@ -178,7 +179,7 @@ class CategoryController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ActionStoreRequest")
+     *         @OA\JsonContent(ref="#/components/schemas/StoreActionRequest")
      *     ),
      * )
      *

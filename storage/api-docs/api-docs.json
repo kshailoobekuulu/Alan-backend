@@ -23,177 +23,66 @@
                 "tags": [
                     "Actions"
                 ],
-                "summary": "Display all actions",
-                "operationId": "actionsAll",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "The page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "summary": "Get list of actions",
+                "description": "Returns list of actions",
+                "operationId": "getActionsList",
                 "responses": {
                     "200": {
-                        "description": "Everything is fine",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ActionShowRequest"
-                                    }
+                                    "$ref": "#/components/schemas/ActionResource"
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
                     "Actions"
                 ],
-                "summary": "Store actions data",
-                "description": "Store actions data",
-                "operationId": "actionStore",
+                "summary": "Store new action",
+                "description": "Returns action data",
+                "operationId": "storeAction",
                 "requestBody": {
-                    "description": "Pass action credentials",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "price",
-                                    "title"
-                                ],
-                                "properties": {
-                                    "price": {
-                                        "type": "integer",
-                                        "example": "20"
-                                    },
-                                    "title": {
-                                        "type": "string",
-                                        "example": "About actions"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/StoreActionRequest"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "422": {
-                        "description": "Wrong credentials response",
+                    "201": {
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Sorry, wrong email address or password. Please try again"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Action"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/actions/{id}/orders": {
-            "get": {
-                "tags": [
-                    "Actions"
-                ],
-                "summary": "Display all action orders",
-                "operationId": "actionsOrders",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The ID of action",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "example": "1"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Everything is fine",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ActionShowRequest"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/actions/{id}/products": {
-            "get": {
-                "tags": [
-                    "Actions"
-                ],
-                "summary": "Display all action products",
-                "operationId": "actionsProducts",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The ID of action",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "example": "1"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Everything is fine",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ActionShowRequest"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/actions/{id}": {
@@ -201,54 +90,58 @@
                 "tags": [
                     "Actions"
                 ],
-                "summary": "Get action by ID",
-                "operationId": "actionsGet",
+                "summary": "Get action information",
+                "description": "Returns action data",
+                "operationId": "getActionById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "The ID of action",
+                        "description": "Action id",
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        },
-                        "example": "1"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Everything is fine",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ActionShowRequest"
+                                    "$ref": "#/components/schemas/ActionResource"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             },
             "put": {
                 "tags": [
                     "Actions"
                 ],
-                "summary": "Update action by ID",
-                "operationId": "actionsUpdate",
+                "summary": "Update existing action",
+                "description": "Returns updated action data",
+                "operationId": "updateAction",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "The ID of actions",
+                        "description": "Action id",
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        },
-                        "example": "1"
+                        }
                     }
                 ],
                 "requestBody": {
@@ -256,28 +149,35 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ActionStoreRequest"
+                                "$ref": "#/components/schemas/StoreActionRequest"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Everything is fine",
+                    "202": {
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ActionShowRequest"
+                                    "$ref": "#/components/schemas/Action"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             },
             "delete": {
                 "tags": [
@@ -489,7 +389,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ActionStoreRequest"
+                                "$ref": "#/components/schemas/StoreActionRequest"
                             }
                         }
                     }
@@ -594,28 +494,27 @@
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Display all Categories",
-                "operationId": "categoriessAll",
+                "summary": "Get list of categories",
+                "description": "Returns list of categories",
+                "operationId": "getCategoriesList",
                 "responses": {
                     "200": {
-                        "description": "Ok",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CategoryShowRequest"
+                                    "$ref": "#/components/schemas/CategoryResource"
                                 }
                             }
                         }
                     },
-                    "404": {
-                        "description": "Category not found"
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
@@ -778,7 +677,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ActionStoreRequest"
+                                "$ref": "#/components/schemas/StoreActionRequest"
                             }
                         }
                     }
@@ -881,49 +780,41 @@
     },
     "components": {
         "schemas": {
-            "ActionShowRequest": {
-                "title": "Action get example",
-                "description": "Some simple action example",
+            "ActionResource": {
+                "title": "ActionResource",
+                "description": "Action resource",
                 "properties": {
-                    "id": {
-                        "title": "ID",
-                        "description": "Unique ID",
-                        "type": "integer",
-                        "example": "1"
-                    },
-                    "price": {
-                        "title": "Price",
-                        "description": "Value of price for storring",
-                        "type": "integer",
-                        "example": "60"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "description": "Title for storring",
-                        "type": "string",
-                        "example": "About action"
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Action"
+                        }
                     }
                 },
-                "type": "object"
+                "type": "object",
+                "xml": {
+                    "name": "ActionResource"
+                }
             },
-            "ActionStoreRequest": {
-                "title": "Action post example",
-                "description": "Some simple request createad as action",
+            "CategoryResource": {
+                "title": "CategoryResource",
+                "description": "Category resource",
                 "properties": {
-                    "price": {
-                        "title": "price",
-                        "description": "Price of action for storring",
-                        "type": "integer",
-                        "example": "55"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "description": "Title for storring",
-                        "type": "string",
-                        "example": "About action"
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
                     }
                 },
-                "type": "object"
+                "type": "object",
+                "xml": {
+                    "name": "CategoryResource"
+                }
             },
             "BannerShowRequest": {
                 "title": "Banner get example",
@@ -1100,6 +991,199 @@
                         "description": "Updated time",
                         "type": "string",
                         "example": "2021-04-22T12:11:09.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Action": {
+                "title": "Action",
+                "description": "Action model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "price": {
+                        "title": "Price",
+                        "description": "Price of the new Action",
+                        "type": "integer",
+                        "example": "60"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "Title of the new action",
+                        "type": "string",
+                        "example": "This is new action's title"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "product_id": {
+                        "title": "Product ID",
+                        "description": "Product's id of the new action",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/Product"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Action"
+                }
+            },
+            "Category": {
+                "title": "Category",
+                "description": "Category model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the new category",
+                        "type": "string",
+                        "example": "Fruits"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "description": "Slug of the category",
+                        "type": "string",
+                        "example": "This is new categories slug"
+                    },
+                    "photo": {
+                        "title": "Photo",
+                        "description": "Photo of the new category",
+                        "type": "string",
+                        "example": "http://photOfDoolat.png"
+                    },
+                    "category_icon": {
+                        "title": "Category_Icon",
+                        "description": "Icon of the new category",
+                        "type": "string",
+                        "example": "http://photOfDoolat.png"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Category"
+                }
+            },
+            "Product": {
+                "title": "Product",
+                "description": "Product model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the new product",
+                        "type": "string",
+                        "example": "Banana"
+                    },
+                    "price": {
+                        "title": "Price",
+                        "description": "Price of the new product",
+                        "type": "integer",
+                        "example": "60"
+                    },
+                    "photo": {
+                        "title": "Photo",
+                        "description": "Photo of the new product",
+                        "type": "string",
+                        "example": "http://photOfDoolat.png"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "product_id": {
+                        "title": "Product ID",
+                        "description": "Product's id of the new action",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Product"
+                }
+            },
+            "StoreActionRequest": {
+                "title": "Store Project request",
+                "description": "Store Project request body data",
+                "required": [
+                    "price,title"
+                ],
+                "properties": {
+                    "price": {
+                        "title": "price",
+                        "description": "Price of action for storring",
+                        "type": "integer",
+                        "example": "55"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "Title for storring",
+                        "type": "string",
+                        "example": "About action"
+                    },
+                    "product_id": {
+                        "title": "product_id",
+                        "description": "Product's id of the new action",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
                     }
                 },
                 "type": "object"

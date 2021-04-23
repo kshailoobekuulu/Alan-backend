@@ -4,14 +4,26 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     title="CategoryResource",
+ *     description="Category resource",
+ *     @OA\Xml(
+ *         name="CategoryResource"
+ *     )
+ * )
+ */
 class CategoryResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * @OA\Property(
+     *     title="Data",
+     *     description="Data wrapper"
+     * )
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @var \App\Virtual\Models\Category[]
      */
+    private $data;
     public function toArray($request)
     {
         return [
@@ -19,7 +31,9 @@ class CategoryResource extends JsonResource
             'name'=>$this->name,
             'slug'=>$this->slug,
             'photo'=>$this->photo,
-            'created_at'=>$this->created_at
+            'created_at'=>$this->created_at,
+            'category_icon'=>$this->category_icon,
+            'photos'=>PhotoResource::collection($this->photos)
         ];
     }
 }

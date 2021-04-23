@@ -172,7 +172,7 @@ class BannerController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ActionStoreRequest")
+     *         @OA\JsonContent(ref="#/components/schemas/StoreActionRequest")
      *     ),
      * )
      *
