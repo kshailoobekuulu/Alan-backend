@@ -27,6 +27,9 @@ Route::apiResource('actions','API\ActionController');
 Route::get('actions/{action}/orders','API\ActionController@orders');
 Route::get('actions/{action}/products','API\ActionController@products');
 
+Route::post('add-to-cart', 'API\CartController@addToCart')->name('add-to-cart');
+Route::get('get-cart', 'API\CartController@getCart')->name('get-cart');
+
 Route::apiResource('categories', 'API\CategoryController');
 Route::get('categories/{category}/products','API\CategoryController@products');
 
