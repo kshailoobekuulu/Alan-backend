@@ -2,14 +2,14 @@
 namespace App\Virtual\Models;
 /**
  * @OA\Schema(
- *     title="Action",
- *     description="Action model",
+ *     title="Order",
+ *     description="Order model",
  *     @OA\Xml(
- *         name="Action"
+ *         name="Order"
  *     )
  * )
  */
-class Action
+class Order
 {
     /**
      * @OA\Property(
@@ -24,34 +24,44 @@ class Action
     private $id;
     /**
      * @OA\Property(
-     *      title="Price",
-     *      description="Price of the new Action",
-     *      example="60"
+     *      title="Address",
+     *      description="Address of the new order",
+     *      example="This is new order's address"
+     * )
+     *
+     * @var string
+     */
+    public $address;
+    /**
+     * @OA\Property(
+     *      title="Phone",
+     *      description="Phone number of the new order",
+     *      example="This is new order's phone number"
+     * )
+     *
+     * @var string
+     */
+    public $phone;
+    /**
+     * @OA\Property(
+     *      title="Total Price",
+     *      description="Total price of the Order",
+     *      example="360"
      * )
      *
      * @var integer
      */
-    public $price;
+    public $total_price;
     /**
      * @OA\Property(
-     *      title="Title",
-     *      description="Title of the new action",
-     *      example="This is new action's title"
+     *      title="Additional Information",
+     *      description="Additional information of the order",
+     *      example="additional information"
      * )
      *
      * @var string
      */
-    public $title;
-    /**
-     * @OA\Property(
-     *      title="Photo",
-     *      description="Photo of the new action",
-     *      example="http://DoolatKrasavchik.png"
-     * )
-     *
-     * @var string
-     */
-    public $photo;
+    public $additional_information;
     /**
      * @OA\Property(
      *     title="Created at",
@@ -77,14 +87,4 @@ class Action
      * @var \DateTime
      */
     private $updated_at;
-
-    /**
-     * @OA\Property(
-     *     title="Product",
-     *     description="Action product's models"
-     * )
-     *
-     * @var \App\Virtual\Models\ActionProduct
-     */
-    private $product;
 }

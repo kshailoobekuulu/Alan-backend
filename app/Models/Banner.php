@@ -10,7 +10,4 @@ class Banner extends Model
     use HasFactory;
     protected $guarded=[];
 
-    public function photos(){
-        return $this->belongsToMany(Photo::class,'banner_photos')->withTimestamps();
-    }
 }

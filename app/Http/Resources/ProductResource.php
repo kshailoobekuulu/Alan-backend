@@ -5,14 +5,26 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use phpDocumentor\Reflection\Types\Parent_;
 
+/**
+ * @OA\Schema(
+ *     title="ProductResource",
+ *     description="Product resource",
+ *     @OA\Xml(
+ *         name="ProductResource"
+ *     )
+ * )
+ */
 class ProductResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * @OA\Property(
+     *     title="Data",
+     *     description="Data wrapper"
+     * )
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @var \App\Virtual\Models\Product
      */
+    private $data;
     public function toArray($request)
     {
         return [

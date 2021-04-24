@@ -21,7 +21,7 @@ class ActionResource extends JsonResource
      *     description="Data wrapper"
      * )
      *
-     * @var \App\Virtual\Models\Action[]
+     * @var \App\Virtual\Models\Action
      */
     private $data;
     public function toArray($request)
@@ -30,9 +30,10 @@ class ActionResource extends JsonResource
             'id'=>$this->id,
             'price'=>$this->price,
             'title'=>$this->title,
+            'photo'=>$this->photo,
             'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,
-            'products'=>ProductResource::collection($this->products)
+            'products'=>ActionProductResource::collection($this->products)
         ];
     }
 }

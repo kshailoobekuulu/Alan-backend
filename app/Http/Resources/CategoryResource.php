@@ -31,9 +31,9 @@ class CategoryResource extends JsonResource
             'name'=>$this->name,
             'slug'=>$this->slug,
             'photo'=>$this->photo,
-            'created_at'=>$this->created_at,
             'category_icon'=>$this->category_icon,
-            'photos'=>PhotoResource::collection($this->photos)
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at
         ];
     }
 }

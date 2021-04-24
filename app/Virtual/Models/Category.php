@@ -49,7 +49,7 @@ class Category
      * @OA\Property(
      *      title="Photo",
      *      description="Photo of the new category",
-     *      example="http://photOfDoolat.png"
+     *      example="http://DoolatKrasavchik.png"
      * )
      *
      * @var string
@@ -59,7 +59,7 @@ class Category
      * @OA\Property(
      *      title="Category_Icon",
      *      description="Icon of the new category",
-     *      example="http://photOfDoolat.png"
+     *      example="http://DoolatKrasavchik.png"
      * )
      *
      * @var string

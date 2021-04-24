@@ -77,15 +77,4 @@ class Product
      * @var \DateTime
      */
     private $updated_at;
-    /**
-     * @OA\Property(
-     *      title="Product ID",
-     *      description="Product's id of the new action",
-     *      format="int64",
-     *      example=1
-     * )
-     *
-     * @var integer
-     */
-    public $product_id;
 }

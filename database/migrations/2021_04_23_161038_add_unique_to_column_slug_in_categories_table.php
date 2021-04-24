@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePhotosTable extends Migration
+class AddUniqueToColumnSlugInCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreatePhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
-            $table->id();
-            $table->string('url');
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->string('slug')->unique()->change();
         });
     }
 
@@ -27,6 +25,8 @@ class CreatePhotosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropIfExists('slug');
+        });
     }
 }

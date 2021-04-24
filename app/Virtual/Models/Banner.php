@@ -2,14 +2,14 @@
 namespace App\Virtual\Models;
 /**
  * @OA\Schema(
- *     title="Action",
- *     description="Action model",
+ *     title="Banner",
+ *     description="Banner model",
  *     @OA\Xml(
- *         name="Action"
+ *         name="Banner"
  *     )
  * )
  */
-class Action
+class Banner
 {
     /**
      * @OA\Property(
@@ -24,19 +24,20 @@ class Action
     private $id;
     /**
      * @OA\Property(
-     *      title="Price",
-     *      description="Price of the new Action",
-     *      example="60"
+     *      title="Description",
+     *      description="Description of the new banner",
+     *      example="This is new banner's description"
      * )
      *
-     * @var integer
+     * @var string
      */
-    public $price;
+    public $description;
+
     /**
      * @OA\Property(
      *      title="Title",
-     *      description="Title of the new action",
-     *      example="This is new action's title"
+     *      description="Title of the new banner",
+     *      example="This is new banner's title"
      * )
      *
      * @var string
@@ -45,8 +46,8 @@ class Action
     /**
      * @OA\Property(
      *      title="Photo",
-     *      description="Photo of the new action",
-     *      example="http://DoolatKrasavchik.png"
+     *      description="Photo of the new banner",
+     *      example="This is new banner's photo"
      * )
      *
      * @var string
@@ -78,13 +79,4 @@ class Action
      */
     private $updated_at;
 
-    /**
-     * @OA\Property(
-     *     title="Product",
-     *     description="Action product's models"
-     * )
-     *
-     * @var \App\Virtual\Models\ActionProduct
-     */
-    private $product;
 }
