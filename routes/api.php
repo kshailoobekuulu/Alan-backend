@@ -26,6 +26,8 @@ Route::group([
 Route::apiResource('actions','API\ActionController');
 Route::apiResource('categories', 'API\CategoryController');
 Route::apiResource('banners','API\BannerController');
+Route::apiResource('products','API\ProductController');
+Route::apiResource('orders','API\OrderController');
 
 //Route::post('add-to-cart', 'API\CartController@addToCart')->name('add-to-cart');
 //Route::get('get-cart', 'API\CartController@getCart')->name('get-cart');

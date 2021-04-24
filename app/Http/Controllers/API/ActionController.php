@@ -39,11 +39,9 @@ class ActionController extends Controller
      */
     public function index()
     {
-//        return \App\Virtual\Resources\ActionResource()->collection(Action::all());
-//        return response()->json(Action::all(),200);
-        return ActionResource::collection(Action::with(['products'])->get());
-//        return new ActionResource(Action::findOrFail(2)->products);
-
+        $actionsProducts=Action::with(['products'])->get();
+        if($actionsProducts!==null) return ActionResource::collection($actionsProducts);
+        return response()->json('Actions not found',404);
     }
 
     public function store()

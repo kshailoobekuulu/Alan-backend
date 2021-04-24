@@ -32,7 +32,8 @@ class OrderResource extends JsonResource
             'phone'=>$this->phone,
             'total_price'=>$this->total_price,
             'additional_information'=>$this->additional_information,
-            'created_at'=>$this->created_at
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at
         ] ;
     }
 }

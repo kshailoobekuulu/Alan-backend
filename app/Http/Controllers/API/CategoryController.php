@@ -7,6 +7,7 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Action;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -82,9 +83,13 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
+        $category=Category::where('slug',$slug)->get()->first();
 //        $category=Category::find($slug);
-//        if($category) return response()->json($category,200);
-//        return response()->json('Category not found',404);
+        if($category){
+            if($category->products()->exists()) return ProductResource::collection($category->products);
+            return response()->json('Products not found',404);
+        }
+        return response()->json('Category not found',404);
     }
 
     public function update(Request $request, $id)
