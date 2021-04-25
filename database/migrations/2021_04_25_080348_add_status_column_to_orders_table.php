@@ -16,6 +16,7 @@ class AddStatusColumnToOrdersTable extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->string('status');
         });
+        DB::statement("ALTER TABLE orders ADD CONSTRAINT chk_status CHECK (status IN ('waiting','in_progress','on_its_way','delivered'));");
     }
 
     /**
