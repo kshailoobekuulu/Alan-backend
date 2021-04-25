@@ -35,10 +35,29 @@ class OrderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *      path="/orders",
+     *      operationId="store orders",
+     *      tags={"Orders"},
+     *      summary="Store orders",
+     *      description="Store ordered product",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/StoreCartRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not Found",
+     *       ),
+     *     @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *       ),
+     * )
      */
     public function store(Request $request)
     {

@@ -31,6 +31,7 @@ Route::apiResource('orders','API\OrderController');
 
 Route::post('add-to-cart', 'API\CartController@addToCart')->name('add-to-cart');
 Route::get('get-cart', 'API\CartController@getCart')->name('get-cart');
+Route::delete('remove-from-cart', 'API\CartController@removeFromCart')->name('remove-from-cart');
 
 
 

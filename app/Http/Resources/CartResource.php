@@ -17,13 +17,13 @@ class CartResource extends JsonResource
 {
     /**
      * @OA\Property(
-     *     title="Data",
-     *     description="Data wrapper"
+     *     title="Products",
+     *     description="Products wrapper"
      * )
      *
      * @var \App\Virtual\Models\CartProduct[]
      */
-    private $data;
+    private $products;
     public function toArray($request)
     {
         return[

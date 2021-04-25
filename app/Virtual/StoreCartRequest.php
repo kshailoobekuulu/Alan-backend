@@ -3,7 +3,7 @@ namespace App\Virtual;
 
 /**
  * @OA\Schema(
- *      title="Store Cart request",
+ *      title="Store Cart request. ",
  *      description="Store Cart request body data",
  *      type="object",
  *      required={"id"}
@@ -33,5 +33,16 @@ class StoreCartRequest
      * @var integer
      */
     public $quantity;
+    /**
+     * @OA\Property(
+     *      title="Type",
+     *      description="Type of request product or action",
+     *      format="string",
+     *      example="action"
+     * )
+     *
+     * @var string
+     */
+    public $type;
 
 }

@@ -3,14 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExampleStoreRequest;
 use App\Http\Resources\ActionResource;
-use App\Http\Resources\OrderResource;
-use App\Http\Resources\ProductResource;
-use App\Models\Action;
-use App\Models\Product;
-use http\Env\Response;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Http\Request;
 
 class ActionController extends Controller

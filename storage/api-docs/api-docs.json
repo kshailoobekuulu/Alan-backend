@@ -98,7 +98,7 @@
                     "Cart"
                 ],
                 "summary": "Store product",
-                "description": "Store cart product",
+                "description": "Add products to the cart.The type field must be 'action' or 'product'",
                 "operationId": "storeProductsToCart",
                 "requestBody": {
                     "required": true,
@@ -116,6 +116,51 @@
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/remove-from-cart": {
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Delete existing product from Cart",
+                "description": "Deletes a product",
+                "operationId": "deleteProduct",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Project id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeleteCartRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     }
                 }
             }
@@ -204,6 +249,35 @@
                         "description": "Not Found"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Store orders",
+                "description": "Store ordered product",
+                "operationId": "store orders",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCartRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
             }
         },
         "/products": {
@@ -274,9 +348,9 @@
                 "title": "CartResource",
                 "description": "Cart resource",
                 "properties": {
-                    "data": {
-                        "title": "Data",
-                        "description": "Data wrapper",
+                    "products": {
+                        "title": "Products",
+                        "description": "Products wrapper",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/CartProduct"
@@ -341,6 +415,23 @@
                 "xml": {
                     "name": "ProductResource"
                 }
+            },
+            "DeleteCartRequest": {
+                "title": "Delete Cart request",
+                "description": "Delete Cart request body data",
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Id of the product",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    }
+                },
+                "type": "object"
             },
             "Action": {
                 "title": "Action",
@@ -720,7 +811,7 @@
                 "type": "object"
             },
             "StoreCartRequest": {
-                "title": "Store Cart request",
+                "title": "Store Cart request. ",
                 "description": "Store Cart request body data",
                 "required": [
                     "id"
@@ -739,6 +830,13 @@
                         "type": "integer",
                         "format": "int64",
                         "example": 3
+                    },
+                    "type": {
+                        "title": "Type",
+                        "description": "Type of request product or action",
+                        "type": "string",
+                        "format": "string",
+                        "example": "action"
                     }
                 },
                 "type": "object"
