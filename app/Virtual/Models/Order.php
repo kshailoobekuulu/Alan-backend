@@ -54,6 +54,16 @@ class Order
     public $total_price;
     /**
      * @OA\Property(
+     *      title="Status",
+     *      description="Status of the order",
+     *      example="delivered"
+     * )
+     *
+     * @var string
+     */
+    public $status;
+    /**
+     * @OA\Property(
      *      title="Additional Information",
      *      description="Additional information of the order",
      *      example="additional information"

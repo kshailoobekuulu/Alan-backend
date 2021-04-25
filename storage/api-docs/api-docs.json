@@ -483,6 +483,12 @@
                         "type": "integer",
                         "example": "360"
                     },
+                    "status": {
+                        "title": "Status",
+                        "description": "Status of the order",
+                        "type": "string",
+                        "example": "delivered"
+                    },
                     "additional_information": {
                         "title": "Additional Information",
                         "description": "Additional information of the order",
