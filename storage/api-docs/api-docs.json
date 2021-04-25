@@ -96,12 +96,6 @@
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 }
             }
@@ -211,7 +205,12 @@
                 "description": "Action resource",
                 "properties": {
                     "data": {
-                        "$ref": "#/components/schemas/Action"
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Action"
+                        }
                     }
                 },
                 "type": "object",
@@ -268,7 +267,12 @@
                 "description": "Product resource",
                 "properties": {
                     "data": {
-                        "$ref": "#/components/schemas/Product"
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Product"
+                        }
                     }
                 },
                 "type": "object",
@@ -319,8 +323,13 @@
                         "format": "datetime",
                         "example": "2020-01-27 17:50:45"
                     },
-                    "product": {
-                        "$ref": "#/components/schemas/ActionProduct"
+                    "products": {
+                        "title": "Products",
+                        "description": "Action product's models",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ActionProduct"
+                        }
                     }
                 },
                 "type": "object",
