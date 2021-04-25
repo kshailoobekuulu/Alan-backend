@@ -22,8 +22,9 @@ class ActionFactory extends Factory
     public function definition()
     {
         return [
-            'price'=>$this->faker->numberBetween(10,100),
-            'title'=>$this->faker->slug
+            'price' => $this->faker->numberBetween(10,100),
+            'title' => $this->faker->slug,
+            'photo' => $this->faker->url
         ];
     }
 }

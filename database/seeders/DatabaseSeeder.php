@@ -17,9 +17,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        User::factory(10)->create();
-//        Product::factory(10)->create();
-//        Action::factory(10)->create();
-//        Category::factory(15)->create();
+        User::factory(10)->create();
+        Product::factory(10)->create();
+        Action::factory(10)->create();
+        Category::factory(15)->create();
+
+        for($i = 1; $i <= 10; $i++) {
+            Action::find($i)->products()->attach([
+                random_int(1, 3) => ['quantity' => random_int(1, 10)],
+                random_int(4, 7) => ['quantity' => random_int(1, 10)],
+                random_int(7, 10) => ['quantity' => random_int(1, 10)],
+            ]);
+            Category::find($i)->products()->attach(Product::all()->random(3));
+        }
     }
 }

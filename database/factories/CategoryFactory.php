@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name'=>$this->faker->name,
-            'slug'=>$this->faker->slug,
+            'slug'=>$this->faker->unique()->slug(20),
             'photo'=>$this->faker->url,
             'category_icon'=>$this->faker->url
         ];
