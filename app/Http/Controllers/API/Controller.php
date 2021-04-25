@@ -34,6 +34,10 @@ namespace App\Http\Controllers\API;
  *     name="Banners",
  *     description="Banners list",
  * )
+ *  * @OA\Tag(
+ *     name="Cart",
+ *     description="Cart list",
+ * )
  * @OA\Server(
  *     description="Laravel Swagger API server",
  *     url="http://127.0.0.1:8000/api"

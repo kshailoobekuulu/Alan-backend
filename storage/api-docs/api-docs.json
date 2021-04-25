@@ -67,6 +67,59 @@
                 }
             }
         },
+        "/get-cart": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Get list of producs from Cart",
+                "description": "Returns list of producs from Cart",
+                "operationId": "getCartList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CartResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/add-to-cart": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Store product",
+                "description": "Store cart product",
+                "operationId": "storeProductsToCart",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCartRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "tags": [
@@ -215,6 +268,24 @@
                 "type": "object",
                 "xml": {
                     "name": "BannerResource"
+                }
+            },
+            "CartResource": {
+                "title": "CartResource",
+                "description": "Cart resource",
+                "properties": {
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartProduct"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CartResource"
                 }
             },
             "CategoryResource": {
@@ -397,6 +468,61 @@
                 "type": "object",
                 "xml": {
                     "name": "Banner"
+                }
+            },
+            "CartProduct": {
+                "title": "Cart",
+                "description": "Cart model",
+                "properties": {
+                    "quantity": {
+                        "title": "Quantity",
+                        "description": "Quantity of the new product",
+                        "type": "integer",
+                        "example": "3"
+                    },
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the new product",
+                        "type": "string",
+                        "example": "Banana"
+                    },
+                    "price": {
+                        "title": "Price",
+                        "description": "Price of the new product",
+                        "type": "integer",
+                        "example": "60"
+                    },
+                    "photo": {
+                        "title": "Photo",
+                        "description": "Photo of the new product",
+                        "type": "string",
+                        "example": "http://photOfDoolat.png"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CartProduct"
                 }
             },
             "Category": {
@@ -592,6 +718,30 @@
                     }
                 },
                 "type": "object"
+            },
+            "StoreCartRequest": {
+                "title": "Store Cart request",
+                "description": "Store Cart request body data",
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Id of the product",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "title": "quantity",
+                        "description": "Quantity of the product",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 3
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -622,6 +772,10 @@
         {
             "name": "Banners",
             "description": "Banners list"
+        },
+        {
+            "name": "Cart",
+            "description": "Cart list"
         }
     ],
     "security": [
