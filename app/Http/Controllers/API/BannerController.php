@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BannerResource;
-use App\Http\Resources\PhotoResource;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
@@ -18,21 +17,12 @@ class BannerController extends Controller
      *     operationId="bannersAll",
      *     tags={"Banners"},
      *     summary="Display all Banners",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/BannerResource"),
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response="404",description="Banner not found")
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/BannerResource")
+     *       ),
+     *     @OA\Response(response="404",description="Fot Found")
      * )
      *
      * Display a listing of the resource.

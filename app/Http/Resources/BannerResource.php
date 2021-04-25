@@ -21,7 +21,7 @@ class BannerResource extends JsonResource
      *     description="Data wrapper"
      * )
      *
-     * @var \App\Virtual\Models\Banner
+     * @var \App\Virtual\Models\Banner[]
      */
     private $data;
     public function toArray($request)

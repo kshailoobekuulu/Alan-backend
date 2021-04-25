@@ -28,13 +28,9 @@ class ActionController extends Controller
      *          @OA\JsonContent(ref="#/components/schemas/ActionResource")
      *       ),
      *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
+     *          response=404,
+     *          description="Not Found",
      *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
      *     )
      */
     public function index()

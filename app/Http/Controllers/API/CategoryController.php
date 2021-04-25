@@ -23,7 +23,11 @@ class CategoryController extends Controller
      *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/CategoryResource")
-     *       )
+     *       ),
+     *     @OA\Response(
+     *          response=404,
+     *          description="Not Found",
+     *      ),
      *     )
      */
     public function index()
@@ -46,9 +50,7 @@ class CategoryController extends Controller
      *     operationId="categoriesProducts",
      *     tags={"Categories"},
      *     summary="Get categories products by SLUG",
-     *     security={
-     *       {"api_key": {}},
-     *     },
+     *
      *     @OA\Parameter(
      *         name="slug",
      *         in="path",
@@ -64,7 +66,7 @@ class CategoryController extends Controller
      *         description="Everything is fine",
      *         @OA\JsonContent(ref="#/components/schemas/ProductResource")
      *     ),
-     *     @OA\Response(response="404",description="Category not found")
+     *     @OA\Response(response="404",description="Not Found")
      * )
      *
      * Display a listing of the resource.

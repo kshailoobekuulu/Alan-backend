@@ -37,11 +37,8 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -55,27 +52,19 @@
                 "operationId": "bannersAll",
                 "responses": {
                     "200": {
-                        "description": "Everything is fine",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/BannerResource"
-                                    }
+                                    "$ref": "#/components/schemas/BannerResource"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Banner not found"
+                        "description": "Fot Found"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/categories": {
@@ -96,6 +85,9 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -131,14 +123,9 @@
                         }
                     },
                     "404": {
-                        "description": "Category not found"
+                        "description": "Not Found"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/orders": {
@@ -160,11 +147,8 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -188,11 +172,8 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -223,7 +204,12 @@
                 "description": "Banner resource",
                 "properties": {
                     "data": {
-                        "$ref": "#/components/schemas/Banner"
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Banner"
+                        }
                     }
                 },
                 "type": "object",
@@ -254,7 +240,12 @@
                 "description": "Order resource",
                 "properties": {
                     "data": {
-                        "$ref": "#/components/schemas/Order"
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Order"
+                        }
                     }
                 },
                 "type": "object",

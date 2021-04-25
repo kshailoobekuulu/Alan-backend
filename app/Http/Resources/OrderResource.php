@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
      *     description="Data wrapper"
      * )
      *
-     * @var \App\Virtual\Models\Order
+     * @var \App\Virtual\Models\Order[]
      */
     private $data;
     public function toArray($request)
