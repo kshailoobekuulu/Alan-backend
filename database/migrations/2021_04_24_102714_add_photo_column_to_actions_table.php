@@ -14,7 +14,7 @@ class AddPhotoColumnToActionsTable extends Migration
     public function up()
     {
         Schema::table('actions', function (Blueprint $table) {
-            $table->string('photo');
+            $table->text('photo');
         });
     }
 
@@ -26,7 +26,7 @@ class AddPhotoColumnToActionsTable extends Migration
     public function down()
     {
         Schema::table('actions', function (Blueprint $table) {
-            $table->dropIfExists('photo');
+            $table->dropColumn('photo');
         });
     }
 }

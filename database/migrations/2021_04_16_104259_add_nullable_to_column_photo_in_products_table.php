@@ -14,7 +14,7 @@ class AddNullableToColumnPhotoInProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('photo')->nullable()->change();
+            $table->string('photo')->nullable(true)->change();
         });
     }
 
@@ -26,7 +26,7 @@ class AddNullableToColumnPhotoInProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            //
+            $table->string('photo')->nullable(false)->change();
         });
     }
 }

@@ -14,7 +14,7 @@ class AddCategoryIconToCategoryTable extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->string('category_icon');
+            $table->text('category_icon');
         });
     }
 
@@ -26,7 +26,7 @@ class AddCategoryIconToCategoryTable extends Migration
     public function down()
     {
         Schema::table('categories', function (Blueprint $table) {
-            //
+            $table->dropColumn('category_icon');
         });
     }
 }
