@@ -21,7 +21,7 @@ class ActionResource extends JsonResource
      *     description="Data wrapper"
      * )
      *
-     * @var \App\Virtual\Models\Action
+     * @var \App\Virtual\Models\Action[]
      */
     private $data;
     public function toArray($request)

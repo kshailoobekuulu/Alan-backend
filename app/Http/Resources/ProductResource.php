@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
      *     description="Data wrapper"
      * )
      *
-     * @var \App\Virtual\Models\Product
+     * @var \App\Virtual\Models\Product[]
      */
     private $data;
     public function toArray($request)

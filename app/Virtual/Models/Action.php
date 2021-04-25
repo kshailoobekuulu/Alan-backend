@@ -80,11 +80,11 @@ class Action
 
     /**
      * @OA\Property(
-     *     title="Product",
+     *     title="Products",
      *     description="Action product's models"
      * )
      *
-     * @var \App\Virtual\Models\ActionProduct
+     * @var \App\Virtual\Models\ActionProduct[]
      */
-    private $product;
+    private $products;
 }

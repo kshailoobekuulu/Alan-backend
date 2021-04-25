@@ -23,21 +23,13 @@ class CategoryController extends Controller
      *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/CategoryResource")
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
+     *       )
      *     )
      */
     public function index()
     {
         if(Category::all()!==null) return CategoryResource::collection(Category::all());
-        return response()->json('Category not found',200);
+        return response()->json('Category not found',404);
     }
 
     public function store()
@@ -83,7 +75,7 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
-        $category=Category::where('slug',$slug)->get()->first();
+        $category=Category::where('slug',$slug)->first();
 //        $category=Category::find($slug);
         if($category){
             if($category->products()->exists()) return ProductResource::collection($category->products);
