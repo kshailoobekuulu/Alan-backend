@@ -6,7 +6,7 @@ namespace App\Virtual;
  *      title="Store Cart request. ",
  *      description="Store Cart request body data",
  *      type="object",
- *      required={"id"}
+ *      required={"id","quantity","type"}
  * )
  */
 class StoreCartRequest
@@ -14,7 +14,7 @@ class StoreCartRequest
     /**
      * @OA\Property(
      *      title="id",
-     *      description="Id of the product",
+     *      description="Id of the 'product' or 'action'",
      *      format="int64",
      *      example=1
      * )
@@ -25,7 +25,7 @@ class StoreCartRequest
     /**
      * @OA\Property(
      *      title="quantity",
-     *      description="Quantity of the product",
+     *      description="Quantity of the 'product' or 'action'",
      *      format="int64",
      *      example=3
      * )
@@ -36,7 +36,7 @@ class StoreCartRequest
     /**
      * @OA\Property(
      *      title="Type",
-     *      description="Type of request product or action",
+     *      description="Type of request 'product' or 'action'",
      *      format="string",
      *      example="action"
      * )

@@ -2,8 +2,8 @@
 namespace App\Virtual\Models;
 /**
  * @OA\Schema(
- *     title="Cart",
- *     description="Cart model",
+ *     title="CartProduct",
+ *     description="Cart product model",
  *     @OA\Xml(
  *         name="CartProduct"
  *     )

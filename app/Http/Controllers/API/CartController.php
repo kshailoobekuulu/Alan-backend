@@ -30,16 +30,33 @@ class CartController extends Controller
      */
     public function getCart(Request $request){
         $productsInCart = session()->get('products');
-        $products = Product::find(array_keys($productsInCart));
-        foreach ($products as $product) {
-            $product->quantity = $productsInCart[$product->id];
+        $products=[];
+        if ($productsInCart!==null) {
+            $productsI = Product::find(array_keys($productsInCart));
+            foreach ($productsI as $product) {
+                $product->quantity = $productsInCart[$product->id];
+            }
+            $products=$productsI;
         }
         $actionsInCart = session()->get('actions');
-        $actions = Action::find(array_keys($actionsInCart));
-        foreach ($actions as $action) {
-            $action->quantity = $actionsInCart[$action->id];
+        $actions=[];
+        if ($actionsInCart!==null) {
+            $actionsI = Action::find(array_keys($actionsInCart));
+            foreach ($actionsI as $action) {
+                $action->quantity = $actionsInCart[$action->id];
+            }
+            $actions=$actionsI;
         }
-        return ['products'=>$products,'actions'=>$actions];
+        if($products!==null and $actions!==null) {
+            return ['products'=>$products,'actions'=>$actions];
+        }
+        elseif($products==null and $actions!==null) {
+            return ['products'=>[],'actions'=>$actions];
+        }
+        elseif($products!==null and $actions==null) {
+            return ['products'=>$products,'actions'=>[]];
+        }
+        return ['products'=>[],'actions'=>[]];
     }
 
     /**
@@ -99,15 +116,6 @@ class CartController extends Controller
      *      tags={"Cart"},
      *      summary="Delete existing product from Cart",
      *      description="Deletes a product",
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="Project id",
-     *          required=true,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
      *     @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(ref="#/components/schemas/DeleteCartRequest")
@@ -127,12 +135,24 @@ class CartController extends Controller
      * )
      */
     public function removeFromCart(Request $request) {
-        $products = session()->get('products', []);
-        if (!isset($products[$request->id])) {
-            return response()->json('Bad Request', 400);
+//        return ['id'=>$request->id,'type'=>$request->type];
+        if ($request['type']==='product') {
+            $products = session()->get('products', []);
+            if (!isset($products[$request->id])) {
+                return response()->json('Bad Request', 400);
+            }
+            unset($products[$request->id]);
+            session()->put('products',$products);
+            return response()->json('Product succesfully deleted', 201);
         }
-        unset($products[$request->id]);
-        session()->put('products',$products);
-        return response()->json('Succesfully deleted', 201);
+        if ($request['type']==='action') {
+            $actions = session()->get('actions', []);
+            if (!isset($actions[$request->id])) {
+                return response()->json('Bad Request', 400);
+            }
+            unset($actions[$request->id]);
+            session()->put('actions',$actions);
+            return response()->json('Actions succesfully deleted', 201);
+        }
     }
 }

@@ -14,7 +14,7 @@ class DeleteCartRequest
     /**
      * @OA\Property(
      *      title="id",
-     *      description="Id of the product",
+     *      description="Id",
      *      format="int64",
      *      example=1
      * )
@@ -22,4 +22,15 @@ class DeleteCartRequest
      * @var integer
      */
     public $id;
+    /**
+     * @OA\Property(
+     *      title="type",
+     *      description="Type",
+     *      format="string",
+     *      example="action"
+     * )
+     *
+     * @var integer
+     */
+    public $type;
 }

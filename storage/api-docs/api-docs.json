@@ -72,8 +72,8 @@
                 "tags": [
                     "Cart"
                 ],
-                "summary": "Get list of producs from Cart",
-                "description": "Returns list of producs from Cart",
+                "summary": "Get list of 'products' and 'actions' from Cart",
+                "description": "Returns list of 'products' and 'actions' from Cart",
                 "operationId": "getCartList",
                 "responses": {
                     "200": {
@@ -131,17 +131,6 @@
                 "summary": "Delete existing product from Cart",
                 "description": "Deletes a product",
                 "operationId": "deleteProduct",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "Project id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -344,24 +333,6 @@
                     "name": "BannerResource"
                 }
             },
-            "CartActionResource": {
-                "title": "CartActionResource",
-                "description": "Cart action resource",
-                "properties": {
-                    "": {
-                        "title": "Actions",
-                        "description": "Actions wrapper",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/CartAction"
-                        }
-                    }
-                },
-                "type": "object",
-                "xml": {
-                    "name": "CartActionResource"
-                }
-            },
             "CartResource": {
                 "title": "CartResource",
                 "description": "Cart resource",
@@ -410,13 +381,28 @@
                 "title": "OrderResource",
                 "description": "Order resource",
                 "properties": {
-                    "data": {
-                        "title": "Data",
-                        "description": "Data wrapper",
+                    "products": {
+                        "title": "Products",
+                        "description": "Products wrapper",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Order"
+                            "$ref": "#/components/schemas/Product"
                         }
+                    },
+                    "actions": {
+                        "title": "Actions",
+                        "description": "Actions wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartAction"
+                        }
+                    },
+                    "total_price": {
+                        "title": "total_price",
+                        "description": "Total price",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 480
                     }
                 },
                 "type": "object",
@@ -451,10 +437,17 @@
                 "properties": {
                     "id": {
                         "title": "id",
-                        "description": "Id of the product",
+                        "description": "Id",
                         "type": "integer",
                         "format": "int64",
                         "example": 1
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "Type",
+                        "type": "integer",
+                        "format": "string",
+                        "example": "action"
                     }
                 },
                 "type": "object"
@@ -588,8 +581,8 @@
                 }
             },
             "CartAction": {
-                "title": "Cart",
-                "description": "Cart model",
+                "title": "CartAction",
+                "description": "Cart action model",
                 "properties": {
                     "quantity": {
                         "title": "Quantity",
@@ -643,8 +636,8 @@
                 }
             },
             "CartProduct": {
-                "title": "Cart",
-                "description": "Cart model",
+                "title": "CartProduct",
+                "description": "Cart product model",
                 "properties": {
                     "quantity": {
                         "title": "Quantity",
@@ -756,56 +749,12 @@
                 "title": "Order",
                 "description": "Order model",
                 "properties": {
-                    "id": {
-                        "title": "ID",
-                        "description": "ID",
+                    "total_price": {
+                        "title": "total_price",
+                        "description": "Total price",
                         "type": "integer",
                         "format": "int64",
-                        "example": 1
-                    },
-                    "address": {
-                        "title": "Address",
-                        "description": "Address of the new order",
-                        "type": "string",
-                        "example": "This is new order's address"
-                    },
-                    "phone": {
-                        "title": "Phone",
-                        "description": "Phone number of the new order",
-                        "type": "string",
-                        "example": "This is new order's phone number"
-                    },
-                    "total_price": {
-                        "title": "Total Price",
-                        "description": "Total price of the Order",
-                        "type": "integer",
-                        "example": "360"
-                    },
-                    "status": {
-                        "title": "Status",
-                        "description": "Status of the order",
-                        "type": "string",
-                        "example": "delivered"
-                    },
-                    "additional_information": {
-                        "title": "Additional Information",
-                        "description": "Additional information of the order",
-                        "type": "string",
-                        "example": "additional information"
-                    },
-                    "created_at": {
-                        "title": "Created at",
-                        "description": "Created at",
-                        "type": "string",
-                        "format": "datetime",
-                        "example": "2020-01-27 17:50:45"
-                    },
-                    "updated_at": {
-                        "title": "Updated at",
-                        "description": "Updated at",
-                        "type": "string",
-                        "format": "datetime",
-                        "example": "2020-01-27 17:50:45"
+                        "example": 480
                     }
                 },
                 "type": "object",
@@ -862,59 +811,32 @@
                     "name": "Product"
                 }
             },
-            "StoreActionRequest": {
-                "title": "Store Project request",
-                "description": "Store Project request body data",
-                "required": [
-                    "price,title"
-                ],
-                "properties": {
-                    "price": {
-                        "title": "price",
-                        "description": "Price of action for storring",
-                        "type": "integer",
-                        "example": "55"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "description": "Title for storring",
-                        "type": "string",
-                        "example": "About action"
-                    },
-                    "product_id": {
-                        "title": "product_id",
-                        "description": "Product's id of the new action",
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 1
-                    }
-                },
-                "type": "object"
-            },
             "StoreCartRequest": {
                 "title": "Store Cart request. ",
                 "description": "Store Cart request body data",
                 "required": [
-                    "id"
+                    "id",
+                    "quantity",
+                    "type"
                 ],
                 "properties": {
                     "id": {
                         "title": "id",
-                        "description": "Id of the product",
+                        "description": "Id of the 'product' or 'action'",
                         "type": "integer",
                         "format": "int64",
                         "example": 1
                     },
                     "quantity": {
                         "title": "quantity",
-                        "description": "Quantity of the product",
+                        "description": "Quantity of the 'product' or 'action'",
                         "type": "integer",
                         "format": "int64",
                         "example": 3
                     },
                     "type": {
                         "title": "Type",
-                        "description": "Type of request product or action",
+                        "description": "Type of request 'product' or 'action'",
                         "type": "string",
                         "format": "string",
                         "example": "action"

@@ -17,24 +17,37 @@ class OrderResource extends JsonResource
 {
     /**
      * @OA\Property(
-     *     title="Data",
-     *     description="Data wrapper"
+     *     title="Products",
+     *     description="Products wrapper"
      * )
      *
-     * @var \App\Virtual\Models\Order[]
+     * @var \App\Virtual\Models\Product[]
      */
-    private $data;
+    private $products;
+    /**
+     * @OA\Property(
+     *     title="Actions",
+     *     description="Actions wrapper"
+     * )
+     *
+     * @var \App\Virtual\Models\CartAction[]
+     */
+    private $actions;
+    /**
+     * @OA\Property(
+     *     title="total_price",
+     *     description="Total price",
+     *     format="int64",
+     *     example=480
+     * )
+     *
+     * @var integer
+     */
+    private $total_price;
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'addres'=>$this->address,
-            'phone'=>$this->phone,
-            'total_price'=>$this->total_price,
-            'additional_information'=>$this->additional_information,
-            'status'=>$this->status,
-            'created_at'=>$this->created_at,
-            'updated_at'=>$this->updated_at,
+            'quantity' => $this->quantity
         ] ;
     }
 }
