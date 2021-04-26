@@ -47,16 +47,7 @@ class CartController extends Controller
             }
             $actions=$actionsI;
         }
-        if($products!==null and $actions!==null) {
-            return ['products'=>$products,'actions'=>$actions];
-        }
-        elseif($products==null and $actions!==null) {
-            return ['products'=>[],'actions'=>$actions];
-        }
-        elseif($products!==null and $actions==null) {
-            return ['products'=>$products,'actions'=>[]];
-        }
-        return ['products'=>[],'actions'=>[]];
+        return ['products'=>$products,'actions'=>$actions];
     }
 
     /**
