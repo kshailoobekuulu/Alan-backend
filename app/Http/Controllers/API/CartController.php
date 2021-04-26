@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use App\Models\Product;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
@@ -14,8 +15,8 @@ class CartController extends Controller
      *      path="/get-cart",
      *      operationId="getCartList",
      *      tags={"Cart"},
-     *      summary="Get list of producs from Cart",
-     *      description="Returns list of producs from Cart",
+     *      summary="Get list of 'products' and 'actions' from Cart",
+     *      description="Returns list of 'products' and 'actions' from Cart",
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
@@ -33,7 +34,12 @@ class CartController extends Controller
         foreach ($products as $product) {
             $product->quantity = $productsInCart[$product->id];
         }
-        return ['products'=>$products];
+        $actionsInCart = session()->get('actions');
+        $actions = Action::find(array_keys($actionsInCart));
+        foreach ($actions as $action) {
+            $action->quantity = $actionsInCart[$action->id];
+        }
+        return ['products'=>$products,'actions'=>$actions];
     }
 
     /**
@@ -66,17 +72,25 @@ class CartController extends Controller
             $request->validate([
                 'id' => 'required|integer|min:1',
                 'quantity' => 'required|integer|min:1',
+                'type' => 'required|in:product,action'
             ]);
         } catch (ValidationException $e){
             return response()->json('Bad request', 400);
         }
+        if ($request['type']==='product') {
+            $id = $request['id'];
+            if (!Product::find($id)) return response()->json('Not Found',404);
+            $products = session()->get('products', []);
+            $products[$id] = $request->quantity;
+            session()->put('products',$products);
+            return response()->json('Product successfully added', 201);
+        }
         $id = $request['id'];
-        if (!Product::find($id)) return response()->json('Not Found',404);
-        $products = session()->get('products', []);
-        $products[$id] = $request->quantity;
-        session()->put('products',$products);
-        return response()->json('Successfully added', 201);
-
+        if (!Action::find($id)) return response()->json('Not Found',404);
+        $actions = session()->get('actions', []);
+        $actions[$id] = $request->quantity;
+        session()->put('actions',$actions);
+        return response()->json('Action successfully added', 201);
     }
     /**
      * @OA\Delete(
