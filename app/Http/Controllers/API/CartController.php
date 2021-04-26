@@ -19,7 +19,7 @@ class CartController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/CartResource")
+     *          @OA\JsonContent(ref="#/components/schemas/CartResource"),
      *       ),
      *      @OA\Response(
      *          response=404,
@@ -33,7 +33,7 @@ class CartController extends Controller
         foreach ($products as $product) {
             $product->quantity = $productsInCart[$product->id];
         }
-        return $products;
+        return ['products'=>$products];
     }
 
     /**

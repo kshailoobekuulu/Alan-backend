@@ -344,6 +344,24 @@
                     "name": "BannerResource"
                 }
             },
+            "CartActionResource": {
+                "title": "CartActionResource",
+                "description": "Cart action resource",
+                "properties": {
+                    "": {
+                        "title": "Actions",
+                        "description": "Actions wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartAction"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CartActionResource"
+                }
+            },
             "CartResource": {
                 "title": "CartResource",
                 "description": "Cart resource",
@@ -354,6 +372,14 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/CartProduct"
+                        }
+                    },
+                    "actions": {
+                        "title": "Actions",
+                        "description": "Actions wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartAction"
                         }
                     }
                 },
@@ -561,13 +587,68 @@
                     "name": "Banner"
                 }
             },
+            "CartAction": {
+                "title": "Cart",
+                "description": "Cart model",
+                "properties": {
+                    "quantity": {
+                        "title": "Quantity",
+                        "description": "Quantity of the action",
+                        "type": "integer",
+                        "example": "3"
+                    },
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "price": {
+                        "title": "Price",
+                        "description": "Price of the action",
+                        "type": "integer",
+                        "example": "960"
+                    },
+                    "name": {
+                        "title": "Title",
+                        "description": "Title of the action",
+                        "type": "string",
+                        "example": "About action"
+                    },
+                    "photo": {
+                        "title": "Photo",
+                        "description": "Photo of the action",
+                        "type": "string",
+                        "example": "http://photOfDoolat.png"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CartAction"
+                }
+            },
             "CartProduct": {
                 "title": "Cart",
                 "description": "Cart model",
                 "properties": {
                     "quantity": {
                         "title": "Quantity",
-                        "description": "Quantity of the new product",
+                        "description": "Quantity of the product",
                         "type": "integer",
                         "example": "3"
                     },
@@ -580,19 +661,19 @@
                     },
                     "name": {
                         "title": "Name",
-                        "description": "Name of the new product",
+                        "description": "Name of the product",
                         "type": "string",
                         "example": "Banana"
                     },
                     "price": {
                         "title": "Price",
-                        "description": "Price of the new product",
+                        "description": "Price of the product",
                         "type": "integer",
                         "example": "60"
                     },
                     "photo": {
                         "title": "Photo",
-                        "description": "Photo of the new product",
+                        "description": "Photo of the product",
                         "type": "string",
                         "example": "http://photOfDoolat.png"
                     },

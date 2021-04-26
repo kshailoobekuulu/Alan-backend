@@ -5,16 +5,16 @@ namespace App\Virtual\Models;
  *     title="Cart",
  *     description="Cart model",
  *     @OA\Xml(
- *         name="CartProduct"
+ *         name="CartAction"
  *     )
  * )
  */
-class CartProduct
+class CartAction
 {
     /**
      * @OA\Property(
      *      title="Quantity",
-     *      description="Quantity of the product",
+     *      description="Quantity of the action",
      *      example="3"
      * )
      *
@@ -34,19 +34,9 @@ class CartProduct
     private $id;
     /**
      * @OA\Property(
-     *      title="Name",
-     *      description="Name of the product",
-     *      example="Banana"
-     * )
-     *
-     * @var string
-     */
-    public $name;
-    /**
-     * @OA\Property(
      *      title="Price",
-     *      description="Price of the product",
-     *      example="60"
+     *      description="Price of the action",
+     *      example="960"
      * )
      *
      * @var integer
@@ -54,13 +44,24 @@ class CartProduct
     public $price;
     /**
      * @OA\Property(
+     *      title="Title",
+     *      description="Title of the action",
+     *      example="About action"
+     * )
+     *
+     * @var string
+     */
+    public $name;
+    /**
+     * @OA\Property(
      *      title="Photo",
-     *      description="Photo of the product",
+     *      description="Photo of the action",
      *      example="http://photOfDoolat.png"
      * )
      *
      * @var string
      */
+
     public $photo;
     /**
      * @OA\Property(
