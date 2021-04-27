@@ -68,6 +68,42 @@ class Order
     private $additonal_information;
     /**
      * @OA\Property(
+     *     title="total_price",
+     *     description="Total price",
+     *     format="int64",
+     *     example=600
+     * )
+     *
+     * @var integer
+     */
+    private $total_price;
+    /**
+     * @OA\Property(
+     *     title="Created at",
+     *     description="Created at",
+     *     example="2020-01-27 17:50:45",
+     *     format="datetime",
+     *     type="string"
+     * )
+     *
+     * @var \DateTime
+     */
+    private $created_at;
+
+    /**
+     * @OA\Property(
+     *     title="Updated at",
+     *     description="Updated at",
+     *     example="2020-01-27 17:50:45",
+     *     format="datetime",
+     *     type="string"
+     * )
+     *
+     * @var \DateTime
+     */
+    private $updated_at;
+    /**
+     * @OA\Property(
      *     title="Products",
      *     description="Products wrapper"
      * )
@@ -84,15 +120,4 @@ class Order
      * @var \App\Virtual\Models\CartAction[]
      */
     private $actions;
-    /**
-     * @OA\Property(
-     *     title="total_price",
-     *     description="Total price",
-     *     format="int64",
-     *     example=600
-     * )
-     *
-     * @var integer
-     */
-    private $total_price;
 }

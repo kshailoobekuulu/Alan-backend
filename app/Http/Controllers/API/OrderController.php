@@ -30,9 +30,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $products=Order::has('products')->get();
-        $actions=Order::has('actions')->get();
-        return ['products'=>$products,'actions'=>$actions];
+        $orders=Order::all();
+        return OrderResource::collection($orders);
     }
 
     /**
@@ -62,16 +61,29 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $datas=$request->json()->all();
-        $products=[];
-        $actions=[];
-        foreach ($datas as $data) {
-            if($data['type']==='product') {
-                $products[]=$data;
-            }
-            $actions[]=$data;
+        $products = $request->products;
+        $actions = $request->actions;
+        $total_price = 0;
+        foreach ($products as $product) {
+            $total_price += ($product['price'])*($product['quantity']);
         }
-        return ['products'=>$products,'actions'=>$actions];
+        foreach ($actions as $action) {
+            $total_price += ($action['price'])*($action['quantity']);
+        }
+        $order = new Order();
+        $order->address = $request->address;
+        $order->phone = $request->phone;
+        $order->total_price=$total_price;
+        $order->status = 'in_progress';
+        $order->save();
+        foreach ($products as $product) {
+            $order->products()->attach([$product["id"] => ['quantity' => $product["quantity"]]]);
+        }
+        foreach ($actions as $action) {
+            $order->actions()->attach([$action["id"] => ['quantity' => $action["quantity"]]]);
+        }
+//        return [$order,'products'=>$products,'actions'=>$actions];
+        return \response()->json('Successful operation',200);
     }
 
     /**

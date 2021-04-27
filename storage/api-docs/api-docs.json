@@ -769,6 +769,27 @@
                         "format": "string",
                         "example": "additional information"
                     },
+                    "total_price": {
+                        "title": "total_price",
+                        "description": "Total price",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 600
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
                     "products": {
                         "title": "Products",
                         "description": "Products wrapper",
@@ -784,13 +805,6 @@
                         "items": {
                             "$ref": "#/components/schemas/CartAction"
                         }
-                    },
-                    "total_price": {
-                        "title": "total_price",
-                        "description": "Total price",
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 600
                     }
                 },
                 "type": "object",
