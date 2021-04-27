@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -29,9 +30,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::all();
-        if($orders!==null) return OrderResource::collection($orders);
-        return response()->json('Products not found');
+        $products=Order::has('products')->get();
+        $actions=Order::has('actions')->get();
+        return ['products'=>$products,'actions'=>$actions];
     }
 
     /**
@@ -43,7 +44,7 @@ class OrderController extends Controller
      *      description="Store ordered product",
      *      @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/StoreCartRequest")
+     *          @OA\JsonContent(ref="#/components/schemas/Order")
      *      ),
      *      @OA\Response(
      *          response=201,
@@ -61,7 +62,16 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datas=$request->json()->all();
+        $products=[];
+        $actions=[];
+        foreach ($datas as $data) {
+            if($data['type']==='product') {
+                $products[]=$data;
+            }
+            $actions[]=$data;
+        }
+        return ['products'=>$products,'actions'=>$actions];
     }
 
     /**
@@ -98,3 +108,25 @@ class OrderController extends Controller
         //
     }
 }
+//[{
+//    "id": 1,
+//  "quantity": 3,
+//  "type": "action"
+//},{
+//    "id": 2,
+//  "quantity": 3,
+//  "type": "action"
+//},{
+//    "id": 3,
+//  "quantity": 3,
+//  "type": "action"
+//},{
+//    "id": 1,
+//  "quantity": 3,
+//  "type": "product"
+//},{
+//    "id": 1,
+//  "quantity": 3,
+//  "type": "product"
+//}]
+

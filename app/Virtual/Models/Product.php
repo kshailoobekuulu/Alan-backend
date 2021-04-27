@@ -46,7 +46,7 @@ class Product
      * @OA\Property(
      *      title="Photo",
      *      description="Photo of the new product",
-     *      example="http://photOfDoolat.png"
+     *      example="http://Doolat.png"
      * )
      *
      * @var string

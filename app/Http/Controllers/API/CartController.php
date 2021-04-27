@@ -63,7 +63,7 @@ class CartController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="Successful operation",
+     *          description="'Action successfully added' or 'Product successfully added'",
      *       ),
      *      @OA\Response(
      *          response=404,
@@ -113,7 +113,7 @@ class CartController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="Successful operation",
+     *          description="'Action successfully removed' or 'Product successfully removed'",
      *       ),
      *      @OA\Response(
      *          response=404,

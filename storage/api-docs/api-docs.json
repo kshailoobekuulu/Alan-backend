@@ -112,7 +112,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Successful operation"
+                        "description": "'Action successfully added' or 'Product successfully added'"
                     },
                     "404": {
                         "description": "Not Found"
@@ -143,7 +143,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Successful operation"
+                        "description": "'Action successfully removed' or 'Product successfully removed'"
                     },
                     "404": {
                         "description": "Resource Not Found"
@@ -251,7 +251,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/StoreCartRequest"
+                                "$ref": "#/components/schemas/Order"
                             }
                         }
                     }
@@ -378,15 +378,50 @@
                 }
             },
             "OrderResource": {
-                "title": "OrderResource",
+                "title": "OrderRResource",
                 "description": "Order resource",
                 "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "address": {
+                        "title": "address",
+                        "description": "address",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Ahunbaeva,Mira"
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone number",
+                        "type": "string",
+                        "format": "string",
+                        "example": "0777152350"
+                    },
+                    "status": {
+                        "title": "status",
+                        "description": "Status",
+                        "type": "string",
+                        "format": "string",
+                        "example": "delivered"
+                    },
+                    "additonal_information": {
+                        "title": "Info",
+                        "description": "Additional information",
+                        "type": "string",
+                        "format": "string",
+                        "example": "additional information"
+                    },
                     "products": {
                         "title": "Products",
                         "description": "Products wrapper",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Product"
+                            "$ref": "#/components/schemas/CartProduct"
                         }
                     },
                     "actions": {
@@ -402,12 +437,12 @@
                         "description": "Total price",
                         "type": "integer",
                         "format": "int64",
-                        "example": 480
+                        "example": 600
                     }
                 },
                 "type": "object",
                 "xml": {
-                    "name": "OrderResource"
+                    "name": "OrderRResource"
                 }
             },
             "ProductResource": {
@@ -588,7 +623,7 @@
                         "title": "Quantity",
                         "description": "Quantity of the action",
                         "type": "integer",
-                        "example": "3"
+                        "example": "1"
                     },
                     "id": {
                         "title": "ID",
@@ -601,7 +636,7 @@
                         "title": "Price",
                         "description": "Price of the action",
                         "type": "integer",
-                        "example": "960"
+                        "example": "420"
                     },
                     "name": {
                         "title": "Title",
@@ -749,12 +784,35 @@
                 "title": "Order",
                 "description": "Order model",
                 "properties": {
-                    "total_price": {
-                        "title": "total_price",
-                        "description": "Total price",
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 480
+                    "address": {
+                        "title": "address",
+                        "description": "address",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Ahunbaeva,Mira"
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone number",
+                        "type": "string",
+                        "format": "string",
+                        "example": "0777152350"
+                    },
+                    "products": {
+                        "title": "Products",
+                        "description": "Products wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartProduct"
+                        }
+                    },
+                    "actions": {
+                        "title": "Actions",
+                        "description": "Actions wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartAction"
+                        }
                     }
                 },
                 "type": "object",
@@ -789,7 +847,7 @@
                         "title": "Photo",
                         "description": "Photo of the new product",
                         "type": "string",
-                        "example": "http://photOfDoolat.png"
+                        "example": "http://Doolat.png"
                     },
                     "created_at": {
                         "title": "Created at",

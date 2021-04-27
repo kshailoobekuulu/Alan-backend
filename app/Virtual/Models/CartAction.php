@@ -15,7 +15,7 @@ class CartAction
      * @OA\Property(
      *      title="Quantity",
      *      description="Quantity of the action",
-     *      example="3"
+     *      example="1"
      * )
      *
      * @var integer
@@ -36,7 +36,7 @@ class CartAction
      * @OA\Property(
      *      title="Price",
      *      description="Price of the action",
-     *      example="960"
+     *      example="420"
      * )
      *
      * @var integer
