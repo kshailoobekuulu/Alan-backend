@@ -251,7 +251,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Order"
+                                "$ref": "#/components/schemas/StoreOrderRequest"
                             }
                         }
                     }
@@ -381,63 +381,13 @@
                 "title": "OrderRResource",
                 "description": "Order resource",
                 "properties": {
-                    "id": {
-                        "title": "id",
-                        "description": "ID",
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 1
-                    },
-                    "address": {
-                        "title": "address",
-                        "description": "address",
-                        "type": "string",
-                        "format": "string",
-                        "example": "Ahunbaeva,Mira"
-                    },
-                    "phone": {
-                        "title": "phone",
-                        "description": "Phone number",
-                        "type": "string",
-                        "format": "string",
-                        "example": "0777152350"
-                    },
-                    "status": {
-                        "title": "status",
-                        "description": "Status",
-                        "type": "string",
-                        "format": "string",
-                        "example": "delivered"
-                    },
-                    "additonal_information": {
-                        "title": "Info",
-                        "description": "Additional information",
-                        "type": "string",
-                        "format": "string",
-                        "example": "additional information"
-                    },
-                    "products": {
-                        "title": "Products",
-                        "description": "Products wrapper",
+                    "data": {
+                        "title": "Orders",
+                        "description": "Orders wrapper",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/CartProduct"
+                            "$ref": "#/components/schemas/Order"
                         }
-                    },
-                    "actions": {
-                        "title": "Actions",
-                        "description": "Actions wrapper",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/CartAction"
-                        }
-                    },
-                    "total_price": {
-                        "title": "total_price",
-                        "description": "Total price",
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 600
                     }
                 },
                 "type": "object",
@@ -784,6 +734,13 @@
                 "title": "Order",
                 "description": "Order model",
                 "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
                     "address": {
                         "title": "address",
                         "description": "address",
@@ -797,6 +754,20 @@
                         "type": "string",
                         "format": "string",
                         "example": "0777152350"
+                    },
+                    "status": {
+                        "title": "status",
+                        "description": "Status",
+                        "type": "string",
+                        "format": "string",
+                        "example": "delivered"
+                    },
+                    "additonal_information": {
+                        "title": "Info",
+                        "description": "Additional information",
+                        "type": "string",
+                        "format": "string",
+                        "example": "additional information"
                     },
                     "products": {
                         "title": "Products",
@@ -813,6 +784,13 @@
                         "items": {
                             "$ref": "#/components/schemas/CartAction"
                         }
+                    },
+                    "total_price": {
+                        "title": "total_price",
+                        "description": "Total price",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 600
                     }
                 },
                 "type": "object",
@@ -901,6 +879,46 @@
                     }
                 },
                 "type": "object"
+            },
+            "StoreOrderRequest": {
+                "title": "Order",
+                "description": "Order model",
+                "properties": {
+                    "address": {
+                        "title": "address",
+                        "description": "address",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Ahunbaeva,Mira"
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone number",
+                        "type": "string",
+                        "format": "string",
+                        "example": "0777152350"
+                    },
+                    "products": {
+                        "title": "Products",
+                        "description": "Products wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartProduct"
+                        }
+                    },
+                    "actions": {
+                        "title": "Actions",
+                        "description": "Actions wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartAction"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Order"
+                }
             }
         },
         "securitySchemes": {

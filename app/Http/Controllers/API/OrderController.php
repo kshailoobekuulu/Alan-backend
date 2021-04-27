@@ -44,7 +44,7 @@ class OrderController extends Controller
      *      description="Store ordered product",
      *      @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Order")
+     *          @OA\JsonContent(ref="#/components/schemas/StoreOrderRequest")
      *      ),
      *      @OA\Response(
      *          response=201,

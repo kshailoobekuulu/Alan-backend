@@ -1,5 +1,5 @@
 <?php
-namespace App\Virtual\Models;
+namespace App\Virtual;
 /**
  * @OA\Schema(
  *     title="Order",
@@ -9,19 +9,8 @@ namespace App\Virtual\Models;
  *     )
  * )
  */
-class Order
+class StoreOrderRequest
 {
-    /**
-     * @OA\Property(
-     *     title="id",
-     *     description="ID",
-     *     format="int64",
-     *     example=1
-     * )
-     *
-     * @var integer
-     */
-    private $id;
     /**
      * @OA\Property(
      *     title="address",
@@ -46,28 +35,6 @@ class Order
     private $phone;
     /**
      * @OA\Property(
-     *     title="status",
-     *     description="Status",
-     *     format="string",
-     *     example="delivered"
-     * )
-     *
-     * @var string
-     */
-    private $status;
-    /**
-     * @OA\Property(
-     *     title="Info",
-     *     description="Additional information",
-     *     format="string",
-     *     example="additional information"
-     * )
-     *
-     * @var string
-     */
-    private $additonal_information;
-    /**
-     * @OA\Property(
      *     title="Products",
      *     description="Products wrapper"
      * )
@@ -84,15 +51,4 @@ class Order
      * @var \App\Virtual\Models\CartAction[]
      */
     private $actions;
-    /**
-     * @OA\Property(
-     *     title="total_price",
-     *     description="Total price",
-     *     format="int64",
-     *     example=600
-     * )
-     *
-     * @var integer
-     */
-    private $total_price;
 }
