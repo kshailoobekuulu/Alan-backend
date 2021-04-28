@@ -861,6 +861,56 @@
                     "name": "Product"
                 }
             },
+            "OrderActionRequest": {
+                "title": "Store Order actions request. ",
+                "description": "Store order actions request body data",
+                "required": [
+                    "id",
+                    "quantity"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Id of the  'action'",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "title": "quantity",
+                        "description": "Quantity of the 'action'",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 3
+                    }
+                },
+                "type": "object"
+            },
+            "OrderProductRequest": {
+                "title": "Store order pruduct request. ",
+                "description": "Store order product request body data",
+                "required": [
+                    "id",
+                    "quantity"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Id of the 'product'",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "title": "quantity",
+                        "description": "Quantity of the 'product'",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 3
+                    }
+                },
+                "type": "object"
+            },
             "StoreCartRequest": {
                 "title": "Store Cart request. ",
                 "description": "Store Cart request body data",
@@ -917,7 +967,7 @@
                         "description": "Products wrapper",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/CartProduct"
+                            "$ref": "#/components/schemas/OrderProductRequest"
                         }
                     },
                     "actions": {
@@ -925,7 +975,7 @@
                         "description": "Actions wrapper",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/CartAction"
+                            "$ref": "#/components/schemas/OrderActionRequest"
                         }
                     }
                 },

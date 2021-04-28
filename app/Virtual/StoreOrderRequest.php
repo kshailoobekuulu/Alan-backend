@@ -39,7 +39,7 @@ class StoreOrderRequest
      *     description="Products wrapper"
      * )
      *
-     * @var \App\Virtual\Models\CartProduct[]
+     * @var \App\Virtual\OrderProductRequest[]
      */
     private $products;
     /**
@@ -48,7 +48,7 @@ class StoreOrderRequest
      *     description="Actions wrapper"
      * )
      *
-     * @var \App\Virtual\Models\CartAction[]
+     * @var \App\Virtual\OrderActionRequest[]
      */
     private $actions;
 }

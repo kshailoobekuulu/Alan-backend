@@ -4,9 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\ProductResource;
+use App\Models\Action;
 use App\Models\Order;
+use App\Models\Product;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
@@ -61,14 +65,39 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $products = $request->products;
-        $actions = $request->actions;
-        $total_price = 0;
-        foreach ($products as $product) {
-            $total_price += ($product['price'])*($product['quantity']);
+        try {
+            $request->validate([
+                'address' => 'required',
+                'phone' => 'required'
+            ]);
+        } catch (ValidationException $e){
+            return response()->json('Bad request', 400);
         }
-        foreach ($actions as $action) {
-            $total_price += ($action['price'])*($action['quantity']);
+        $productsId = [];
+        $actionsId = [];
+        $total_price = 0;
+        foreach ($request['products'] as $product) {
+            $productsId[] = $product['id'];
+        }
+        foreach ($request['actions'] as $action) {
+            $actionsId[] = $action['id'];
+        }
+        $productsDB = Product::find($productsId);
+        $actionsDB = Action::find($actionsId);
+        $arr=[];
+        foreach ($actionsDB as $actionDB) {
+            foreach ($request['actions'] as $action) {
+                if($action['id'] === $actionDB->id) {
+                    $total_price += ($actionDB->price)*($action['quantity']);
+                }
+            }
+        }
+        foreach ($productsDB as $productDB) {
+            foreach ($request['products'] as $product) {
+                if($product['id'] === $productDB->id) {
+                    $total_price += ($productDB->price)*($product['quantity']);
+                }
+            }
         }
         $order = new Order();
         $order->address = $request->address;
@@ -76,13 +105,21 @@ class OrderController extends Controller
         $order->total_price=$total_price;
         $order->status = 'in_progress';
         $order->save();
-        foreach ($products as $product) {
-            $order->products()->attach([$product["id"] => ['quantity' => $product["quantity"]]]);
+        foreach ($actionsDB as $actionDB) {
+            foreach ($request['actions'] as $action) {
+                if($action['id'] === $actionDB->id) {
+                    $order->actions()->attach([$actionDB->id => ['quantity' => $action['quantity']]]);
+                }
+            }
         }
-        foreach ($actions as $action) {
-            $order->actions()->attach([$action["id"] => ['quantity' => $action["quantity"]]]);
+        foreach ($productsDB as $productDB) {
+            foreach ($request['products'] as $product) {
+                if($product['id'] === $productDB->id) {
+                    $order->products()->attach([$productDB->id => ['quantity' => $product['quantity']]]);
+                }
+            }
         }
-//        return [$order,'products'=>$products,'actions'=>$actions];
+//        return [$order,'products'=>$order->products,'actions'=>$actionsDB];
         return \response()->json('Successful operation',200);
     }
 
