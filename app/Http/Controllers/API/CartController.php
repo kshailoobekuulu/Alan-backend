@@ -31,6 +31,7 @@ class CartController extends Controller
     public function getCart(Request $request){
         $productsInCart = session()->get('products');
         $products=[];
+//        return $productsInCart;
         if ($productsInCart!==null) {
             $productsI = Product::find(array_keys($productsInCart));
             foreach ($productsI as $product) {

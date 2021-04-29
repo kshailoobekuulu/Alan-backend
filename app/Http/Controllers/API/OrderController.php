@@ -34,8 +34,14 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::all();
-        return OrderResource::collection($orders);
+        $ordersDB=Order::all();
+        $orders = session()->get('orders', []);
+        foreach ($orders as $order) {
+            foreach ($ordersDB as $orderDB) {
+
+            }
+        }
+        return OrderResource::collection($ordersDB);
     }
 
     /**
@@ -84,7 +90,6 @@ class OrderController extends Controller
         }
         $productsDB = Product::find($productsId);
         $actionsDB = Action::find($actionsId);
-        $arr=[];
         foreach ($actionsDB as $actionDB) {
             foreach ($request['actions'] as $action) {
                 if($action['id'] === $actionDB->id) {
@@ -119,7 +124,8 @@ class OrderController extends Controller
                 }
             }
         }
-//        return [$order,'products'=>$order->products,'actions'=>$actionsDB];
+//        $orders = session()->get('orders', []);
+//        session()->put('orders',$orders);
         return \response()->json('Successful operation',200);
     }
 

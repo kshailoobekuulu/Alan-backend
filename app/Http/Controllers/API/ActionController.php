@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ActionResource;
-
+use App\Models\Action;
 use Illuminate\Http\Request;
 
 class ActionController extends Controller
