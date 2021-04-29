@@ -34,7 +34,7 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'products' => ProductResource::collection($this->products),
+            'products' => OrderProductResource::collection($this->products),
             'actions' => OrderActionResource::collection($this->actions)
         ] ;
     }

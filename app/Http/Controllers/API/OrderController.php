@@ -34,14 +34,16 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $ordersDB=Order::all();
-        $orders = session()->get('orders', []);
-        foreach ($orders as $order) {
-            foreach ($ordersDB as $orderDB) {
-
-            }
-        }
+        $ordersDB = Order::all();
+//        $ordersDB=Order::with(['products','actions'])->get();
+//        $orders = session()->get('orders', []);
+//        foreach ($orders as $order) {
+//            foreach ($ordersDB as $orderDB) {
+//
+//            }
+//        }
         return OrderResource::collection($ordersDB);
+//        return $ordersDB;
     }
 
     /**
