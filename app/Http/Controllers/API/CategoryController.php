@@ -56,7 +56,7 @@ class CategoryController extends Controller
      *         in="path",
      *         description="The SLUG of category",
      *         required=true,
-     *         example="fruits",
+     *         example="Category_slug_1",
      *         @OA\Schema(
      *             type="string",
      *         ),

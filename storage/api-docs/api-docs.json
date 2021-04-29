@@ -195,7 +195,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "fruits"
+                        "example": "Category_slug_1"
                     }
                 ],
                 "responses": {
