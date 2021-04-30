@@ -16,12 +16,12 @@ class OrderActionResource extends JsonResource
     {
         return [
             'quantity' => $this->pivot->quantity,
-            'id'=>$this->id,
-            'price'=>$this->price,
-            'title'=>$this->title,
-            'photo'=>$this->photo,
-            'created_at'=>$this->created_at,
-            'updated_at'=>$this->updated_at,
+            'id' => $this->id,
+            'price' => $this->price,
+            'title' => $this->title,
+            'photo' => $this->photo,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
