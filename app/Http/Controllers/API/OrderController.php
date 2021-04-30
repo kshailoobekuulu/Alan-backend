@@ -4,11 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
-use App\Http\Resources\ProductResource;
 use App\Models\Action;
 use App\Models\Order;
 use App\Models\Product;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -34,16 +32,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $ordersDB = Order::all();
-//        $ordersDB=Order::with(['products','actions'])->get();
-//        $orders = session()->get('orders', []);
-//        foreach ($orders as $order) {
-//            foreach ($ordersDB as $orderDB) {
-//
-//            }
-//        }
+        $orders = session()->get('zakaz', []);
+        $ordersDB = Order::find($orders);
         return OrderResource::collection($ordersDB);
-//        return $ordersDB;
     }
 
     /**
@@ -95,21 +86,21 @@ class OrderController extends Controller
         foreach ($actionsDB as $actionDB) {
             foreach ($request['actions'] as $action) {
                 if($action['id'] === $actionDB->id) {
-                    $total_price += ($actionDB->price)*($action['quantity']);
+                    $total_price += ($actionDB->price) * ($action['quantity']);
                 }
             }
         }
         foreach ($productsDB as $productDB) {
             foreach ($request['products'] as $product) {
                 if($product['id'] === $productDB->id) {
-                    $total_price += ($productDB->price)*($product['quantity']);
+                    $total_price += ($productDB->price) * ($product['quantity']);
                 }
             }
         }
         $order = new Order();
         $order->address = $request->address;
         $order->phone = $request->phone;
-        $order->total_price=$total_price;
+        $order->total_price = $total_price;
         $order->status = 'in_progress';
         $order->save();
         foreach ($actionsDB as $actionDB) {
@@ -126,64 +117,12 @@ class OrderController extends Controller
                 }
             }
         }
-//        $orders = session()->get('orders', []);
-//        session()->put('orders',$orders);
-        return \response()->json('Successful operation',200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $SessionOrder = session()->get('zakaz', []);
+        while (count($SessionOrder) >= 5) {
+            array_shift($SessionOrder);
+        }
+        $SessionOrder[] = $order->id;
+        session()->put('zakaz',$SessionOrder);
+        return response()->json('Successful operation',200);
     }
 }
-//[{
-//    "id": 1,
-//  "quantity": 3,
-//  "type": "action"
-//},{
-//    "id": 2,
-//  "quantity": 3,
-//  "type": "action"
-//},{
-//    "id": 3,
-//  "quantity": 3,
-//  "type": "action"
-//},{
-//    "id": 1,
-//  "quantity": 3,
-//  "type": "product"
-//},{
-//    "id": 1,
-//  "quantity": 3,
-//  "type": "product"
-//}]
-

@@ -15,8 +15,8 @@ class ActionProductResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'quantity'=>$this->pivot->quantity,
-            'name'=>$this->name
+            'quantity' => $this->pivot->quantity,
+            'name' => $this->name,
         ];
     }
 }

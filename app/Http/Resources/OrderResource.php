@@ -35,7 +35,7 @@ class OrderResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'products' => OrderProductResource::collection($this->products),
-            'actions' => OrderActionResource::collection($this->actions)
+            'actions' => OrderActionResource::collection($this->actions),
         ] ;
     }
 }
