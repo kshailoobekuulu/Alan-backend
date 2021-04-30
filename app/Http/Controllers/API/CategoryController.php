@@ -32,16 +32,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        if(Category::all()!==null) return CategoryResource::collection(Category::all());
+        if(Category::all() !== null) return CategoryResource::collection(Category::all());
         return response()->json('Category not found',404);
-    }
-
-    public function store()
-    {
-//        $category=new Category();
-//        $category->fill(\request(['name','slug','photo','category_icon']));
-//        $category->save();                                                   //жасай тургандар бар
-//        return response()->json($category,200);
     }
 
     /**
@@ -77,46 +69,13 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
-        $category=Category::where('slug',$slug)->first();
-//        $category=Category::find($slug);
+        $category = Category::where('slug',$slug)->first();
         if($category){
-            if($category->products()->exists()) return ProductResource::collection($category->products);
+            if($category->products()->exists()) {
+                return ProductResource::collection($category->products);
+            }
             return response()->json('Products not found',404);
         }
         return response()->json('Category not found',404);
-    }
-
-    public function update(Request $request, $id)
-    {
-//        $category=Category::find($id);
-//        if($category){
-//            if($request->has('name')) $category->name=$request->name;
-//            if ($request->has('slug')) $category->slug=$request->slug;
-//            if($request->has('category_item'))  $category->category_item=$request->category_item;
-//            if($request->has('photo'))  $category->photo=$request->photo;
-//            $category->save();
-//            if($request->has('products'))
-//                $category->products()->attach($request->input('products'));
-//            return response()->json($category,200);
-//        }
-//        return response()->json('Category not found',404);
-    }
-
-    public function destroy($id)
-    {
-//        if(Category::find($id)){
-//            Category::findOrFail($id)->delete();
-//            return \response()->json('Deleted',202);
-//        }
-//        return response()->json('Category not found',404);
-    }
-
-    public function products($id){
-//        $category=Category::find($id);
-//        if($category){
-//            if($category->products()->exists()) return response()->json(ProductResource::collection($category->products),200);
-//            return response()->json('Product not found',404);
-//        }
-//        return response()->json('Category not found',404);
     }
 }

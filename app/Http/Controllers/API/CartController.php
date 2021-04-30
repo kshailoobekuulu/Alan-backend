@@ -30,9 +30,8 @@ class CartController extends Controller
      */
     public function getCart(Request $request){
         $productsInCart = session()->get('products');
-        $products=[];
-//        return $productsInCart;
-        if ($productsInCart!==null) {
+        $products = [];
+        if ($productsInCart !== null) {
             $productsI = Product::find(array_keys($productsInCart));
             foreach ($productsI as $product) {
                 $product->quantity = $productsInCart[$product->id];
@@ -41,14 +40,14 @@ class CartController extends Controller
         }
         $actionsInCart = session()->get('actions');
         $actions=[];
-        if ($actionsInCart!==null) {
+        if ($actionsInCart !== null) {
             $actionsI = Action::find(array_keys($actionsInCart));
             foreach ($actionsI as $action) {
                 $action->quantity = $actionsInCart[$action->id];
             }
-            $actions=$actionsI;
+            $actions = $actionsI;
         }
-        return ['products'=>$products,'actions'=>$actions];
+        return ['products' => $products,'actions' => $actions];
     }
 
     /**
@@ -86,7 +85,7 @@ class CartController extends Controller
         } catch (ValidationException $e){
             return response()->json('Bad request', 400);
         }
-        if ($request['type']==='product') {
+        if ($request['type'] === 'product') {
             $id = $request['id'];
             if (!Product::find($id)) return response()->json('Not Found',404);
             $products = session()->get('products', []);
@@ -127,8 +126,7 @@ class CartController extends Controller
      * )
      */
     public function removeFromCart(Request $request) {
-//        return ['id'=>$request->id,'type'=>$request->type];
-        if ($request['type']==='product') {
+        if ($request['type'] === 'product') {
             $products = session()->get('products', []);
             if (!isset($products[$request->id])) {
                 return response()->json('Bad Request', 400);
@@ -137,7 +135,7 @@ class CartController extends Controller
             session()->put('products',$products);
             return response()->json('Product succesfully deleted', 201);
         }
-        if ($request['type']==='action') {
+        if ($request['type'] === 'action') {
             $actions = session()->get('actions', []);
             if (!isset($actions[$request->id])) {
                 return response()->json('Bad Request', 400);
