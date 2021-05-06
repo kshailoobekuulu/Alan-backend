@@ -37,7 +37,7 @@
                              height="50" />
                     </td>
                     <td>
-                        <select name="categories[]" id="category">
+                        <select name="categories[]" id="category" class="form-control">
                             @foreach($category->products as $product)
                                 <option value="{{$product->id}}">{{$product->name}}</option>
                             @endforeach

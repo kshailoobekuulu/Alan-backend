@@ -27,9 +27,9 @@
                 @endforeach
             @endif
             @if($s === 1)
-                <option value="{{$all->id}}" selected >{{$all->name}}</option>
+                <option value="{{$all->id}}" selected class="form-control">{{$all->name}}</option>
             @else
-                <option value="{{$all->id}}" >{{$all->name}}</option>
+                <option value="{{$all->id}}" class="form-control">{{$all->name}}</option>
             @endif
         @endforeach
     </select>

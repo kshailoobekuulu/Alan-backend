@@ -79,7 +79,7 @@ class CategoryController extends Controller
 
         $category->products()->detach($request->products);
         $category->products()->attach($request->products);
-        return redirect(route('categories.index')) -> with('success', 'Категория добавлена успешно');
+        return redirect(route('categories.index')) -> with('success', 'Категория изменен успешно');
     }
 
     /**
@@ -94,7 +94,7 @@ class CategoryController extends Controller
         try {
             $category->delete();
         } catch(QueryException $e){
-            return back()->withErrors(__('messages.FAIL_TO_DELETE_CATEGORY'));
+            return back()->withErrors('Невозможно удалить категорию. Возможно эта категория содержит продукты.');
         }
         return redirect(route('categories.index')) -> with('success', 'Категрия успешно удалена');
     }
