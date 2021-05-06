@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use http\Env\Url;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,8 +17,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::with('products')->orderBy('created_at','desc')->get();
+        return view('admin.categories.index',['categories' => $categories]);
+//        return response()->json($categories,200,[],JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,18 +42,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = $request->slug;
+        $category->category_icon = $request->category_icon;
+        $category->photo = $request->photo;
+        $category->save();
+        $category->products()->attach($request->products);
+        return redirect(route('categories.index')) -> with('success', 'Категория добавлена успешно');
     }
 
     /**
@@ -55,9 +58,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $category = Category::where('slug',$slug)->first();
+        return view('admin.categories.edit',['category' => $category]);
     }
 
     /**
@@ -69,7 +73,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        $category->update($request->only(['name','slug','category_icon','photo']));
+        $category->save();
+
+        $category->products()->detach($request->products);
+        $category->products()->attach($request->products);
+        return redirect(route('categories.index')) -> with('success', 'Категория добавлена успешно');
     }
 
     /**
@@ -80,6 +90,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        try {
+            $category->delete();
+        } catch(QueryException $e){
+            return back()->withErrors(__('messages.FAIL_TO_DELETE_CATEGORY'));
+        }
+        return redirect(route('categories.index')) -> with('success', 'Категрия успешно удалена');
     }
 }
