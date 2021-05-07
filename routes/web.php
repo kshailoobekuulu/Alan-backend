@@ -22,10 +22,4 @@ use Illuminate\Support\Facades\Route;
 //        Route::post('/remove-product-from-order/{order_id}/{product_id}',
 //            'OrderedProductController@removeProductFromOrder')->name('remove-product-from-order');
     });
-    Route::get('admin',function (){
-        $products = \App\Models\Product::all();
-        return view('admin.categories.create',[
-            'categories' => [],
-            'products' => $products,
-        ]);
-    });
+
