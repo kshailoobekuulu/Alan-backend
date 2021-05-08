@@ -11,25 +11,29 @@
     <br>
     <div>
         <div>
-            <form action="get" method="{{route("products.index")}}">
+            <form action="{{route("products.index")}}" method="get">
+                @csrf
                 <div class="row p-3 filter-bg">
-                    <div class="col-md-3 p-0">
+                    <div class="col-md-4 p-0">
                         <input type="text" name="q" value="{{request()->q}}" class="form-control" placeholder="Поиск продуктов">
                     </div>
-                    <div class="col-md-3 pl-md-2 p-0 mt-1 mt-md-0">
+                    <div class="col-md-4 pl-md-2 p-0 mt-1 mt-md-0">
                         <select name="category" class="form-control">
+                            <option value="0" class="form-control" selected>Выберите категорию</option>
                             @foreach(\App\Models\Category::all() as $category)
                                 <option value="{{$category->id}}" class="form-control">{{$category->name}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2 pl-md-2 p-0 mt-1 mt-md-0">
-                        <select name="all" class="form-control">
-                            <option value="all">Все</option>
+                    <div class="col-md-3 pl-md-2 p-0 mt-1 mt-md-0">
+                        <select name="active" class="form-control">
+                            <option value="all" class="form-control">Все</option>
+                            <option value="all" class="form-control">Только активные</option>
+                            <option value="all" class="form-control">Только неактивные</option>
                         </select>
                     </div>
-                    <div class="col-md-1 text-right p-0 mt-1 mt-md-0">
-                        <button class="btn btn-primary fa fa-search ml-1 m-sm-0" type="submit" style="line-height: 23px"></button>
+                    <div class="col-md-1 text-right p-0 mt-1 mt-md-0 float-right">
+                        <button class="btn btn-primary fa fa-search ml-1 m-sm-0 float-right" type="submit" style="line-height: 23px"></button>
                     </div>
                 </div>
             </form>
@@ -71,10 +75,10 @@
                 @endif
             </div>
 
-            <div class="col-8 justify-content-center col-md-10 col-lg-10">
+            <div class="col-8 justify-content-center col-md-10 col-lg-10 ">
                 <div class="row align-content-center">
                     <div class="col-lg-2 pl-1 p-0 align-middle"><h5>{{ $product->name }}</h5></div>
-                    <div class="col-lg-2 pl-1 p-0 align-middle"><b>{{ number_format($product->price, 2) }} сом</b></div>
+                    <div class="col-lg-2 pl-1 p-0 align-middle overflow-hidden"><b>{{ number_format($product->price, 2) }} сом</b></div>
                     <div class="col-lg-2 pl-1 p-0 align-middle">
                         <select name="products[]" class="form-control">
                             @foreach($product->categories as $category)

@@ -14,9 +14,18 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('categories')->orderBy('created_at','desc')->get();
+        $products = Product::where('name', 'LIKE','%'.$request->q.'%')->get();
+
+//        if ($request->category) {
+//            $products = $products->where('category_id', $request->category);
+//        }
+//        if ($request->exists('active') && $request->active != 'all') {
+//            $products = $products->where('active', $request->active);
+//        }
+////        $products = $products->paginate(50);
+//        $products = Product::with('categories')->orderBy('created_at','desc')->get();
         return view('admin.products.index',['products' => $products, 'quantity' => 5]);
     }
 
