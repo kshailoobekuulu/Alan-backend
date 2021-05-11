@@ -4,7 +4,7 @@
 </div>
 <div class="form-group">
     <label for="photo">Изображение</label>
-    <input type="file" name="photo" value="" class="form-control" id="photo" >
+    <input type="file" name="photo" class="form-control" id="photo">
 </div>
 <div class="form-group">
     <label for="price">Цена</label>
@@ -15,8 +15,8 @@
     <select name="categories[]" id="category" class="form-control" multiple>
         @foreach(App\Models\Category::all() as $all)
             {{$s=0}}
-            @if(isset($product) && isset($product->category))
-                @foreach($product->category as $category)
+            @if(isset($product) && isset($product->categories))
+                @foreach($product->categories as $category)
                     @if($all->id === $category->id)
                         {{$s=1}}
                     @endif
@@ -29,5 +29,13 @@
             @endif
         @endforeach
     </select>
+</div>
+<div class="form-group">
+    @if($product->active===1)
+        <input type="checkbox" name="active" id="active" checked>
+    @else
+        <input type="checkbox" name="active" id="active">
+    @endif
+    <label for="active">Показывать клиентам</label>
 </div>
 

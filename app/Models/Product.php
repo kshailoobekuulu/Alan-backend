@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    const IMAGES_PATH = 'storage/products/';
     use HasFactory;
     protected $guarded=[];
 

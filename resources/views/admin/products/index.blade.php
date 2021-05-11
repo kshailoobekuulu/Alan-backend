@@ -19,9 +19,9 @@
                     </div>
                     <div class="col-md-4 pl-md-2 p-0 mt-1 mt-md-0">
                         <select name="category" class="form-control">
-                            <option value="0" class="form-control" selected>Выберите категорию</option>
+                            <option value="" class="form-control" selected>Выберите категорию</option>
                             @foreach(\App\Models\Category::all() as $category)
-                                <option value="{{$category->id}}" class="form-control">{{$category->name}}</option>
+                                <option value="{{$category->id}}" @if($category->getId() == request()->category) selected @endif class="form-control">{{$category->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -64,12 +64,12 @@
         </div>
     </div>
     @foreach($products as $product)
-        <div class="row shadow-sm p-2 mt-2 align-items-center">
+        <div class="row shadow-sm p-2 mt-2 align-items-center" >
 
             <div class="col-4 col-sm-3 col-md-2 col-lg-1 p-0 overflow-hidden">
                 @if($product->photo)
-                    <img class="image-list" src="{{ $product->photo }}"
-                         alt="{{__('messages.PRODUCT_IMAGE')}}">
+                    <img class="image-list" src="{{ asset($product->photo) }}"
+                         alt="Изображение продукта">
                 @else
                     <img class="image-list" src="{{ asset('/images/image-not-found.png') }}" alt="">
                 @endif
@@ -80,11 +80,11 @@
                     <div class="col-lg-2 pl-1 p-0 align-middle"><h5>{{ $product->name }}</h5></div>
                     <div class="col-lg-2 pl-1 p-0 align-middle overflow-hidden"><b>{{ number_format($product->price, 2) }} сом</b></div>
                     <div class="col-lg-2 pl-1 p-0 align-middle">
-                        <select name="products[]" class="form-control">
+                        <ul>
                             @foreach($product->categories as $category)
-                                <option value="{{$category->id}}"><b>{{$category->name}}</b></option>
+                                <li><b>{{$category->name}}</b></li>
                             @endforeach
-                        </select>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -102,4 +102,6 @@
             </div>
         </div>
     @endforeach
+    <br>
+    {{ $products->appends(request()->input())->links()  }}
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -16,17 +17,16 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::where('name', 'LIKE','%'.$request->q.'%')->get();
+        $query = Product::where('name', 'like', '%' . $request->q . '%');
 
-//        if ($request->category) {
-//            $products = $products->where('category_id', $request->category);
-//        }
-//        if ($request->exists('active') && $request->active != 'all') {
-//            $products = $products->where('active', $request->active);
-//        }
-////        $products = $products->paginate(50);
-//        $products = Product::with('categories')->orderBy('created_at','desc')->get();
-        return view('admin.products.index',['products' => $products, 'quantity' => 5]);
+        if ($request->category) {
+            $query = $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('category_id', $request->category);
+            });
+        }
+
+        $products = $query->paginate(10);
+        return view('admin.products.index',['products' => $products, 'quantity' => $products->total()]);
     }
 
     /**
@@ -47,10 +47,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|max:100',
+            'price' => ['required', 'regex:/^[1-9][0-9]*/'],
+            'photo' => 'image|required',
+        ]);
         $product = new Product();
+        if ($request->active) {
+            $product->active = true;
+        }
         $product->name = $request->name;
         $product->price = $request->price;
         $product->photo = $request->photo;
+        $image = Image::make($request->photo);
+        $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+        $path = public_path(Product::IMAGES_PATH);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $image->save($path . $name);
+        $product->photo = Product::IMAGES_PATH . $name;
         $product->save();
         $product->categories()->attach($request->categories);
         return redirect(route('products.index')) -> with('success', 'Продукт добавлен успешно');
@@ -91,8 +107,30 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'price' => ['required', 'regex:/^[1-9][0-9]*/'],
+            'photo' => 'image|required',
+            'photo' => 'image',
+
+        ]);
+        $image = null;
+        if ($request->hasfile('photo')) {
+            $image = Image::make($request->photo);
+            $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $path = public_path(Product::IMAGES_PATH);
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $image->save($path . $name);
+        }
         $product = Product::find($id);
-        $product->update(\request()->only('name','price','photo'));
+        $product->update(\request()->only('name','price'));
+        if ($request->active) {
+            $product->active = true;
+        }
+        if ($image) {
+            $product->photo = Product::IMAGES_PATH . $name;
+        }
         $product->save();
         $product->categories()->detach($request->categories);
         $product->categories()->attach($request->categories);
