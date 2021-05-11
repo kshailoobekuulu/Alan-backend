@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Banner extends Model
 {
+    const IMAGES_PATH = 'storage/banners';
     use HasFactory;
     protected $guarded=[];
 

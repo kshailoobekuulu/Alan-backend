@@ -26,12 +26,12 @@
                     <th scope="row">{{ $category->name }}</th>
                     <td>{{ $category->slug   }}</td>
                     <td>
-                        <img src="{{ $category->category_icon }}"
+                        <img src="{{ asset($category->category_icon) }}"
                              width="40"
                              height="50" />
                     </td>
                     <td>
-                        <img src="{{ $category->photo }}"
+                        <img src="{{ asset($category->photo) }}"
                              width="70"
                              height="50" />
                     </td>

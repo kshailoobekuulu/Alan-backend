@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class BannerController extends Controller
 {
@@ -40,10 +41,24 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'description' => 'required|max:255',
+            'title' => 'required|max:100',
+            'photo' => 'image|required',
+        ]);
         $banner = new Banner();
+
+        $image = Image::make($request->photo);
+        $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+        $path = public_path(Banner::IMAGES_PATH);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $image->save($path . $name);
+        $banner->photo = Banner::IMAGES_PATH . $name;
+
         $banner->description = $request->description;
         $banner->title = $request->title;
-        $banner->photo = $request->photo;
         $banner->save();
         return redirect(route('banners.index')) -> with('success', 'Баннер добавлена успешно');
     }
@@ -82,8 +97,28 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'description' => 'required|max:255',
+            'title' => 'required|max:100',
+            'photo' => 'image',
+        ]);
         $banner = Banner::find($id);
-        $banner->update($request->only(['description','title','photo']));
+
+        $image = null;
+        if ($request->hasfile('photo')) {
+            $image = Image::make($request->photo);
+            $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $path = public_path(Banner::IMAGES_PATH);
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $image->save($path . $name);
+        }
+        if ($image) {
+            $banner->photo = Banner::IMAGES_PATH . $name;
+        }
+
+        $banner->update($request->only(['description','title']));
         $banner->save();
 
         return redirect(route('banners.index')) -> with('success', 'Баннер изменен успешно');

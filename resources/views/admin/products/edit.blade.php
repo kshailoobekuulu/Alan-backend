@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('header')
-    {{ __('messages.PRODUCT_EDIT') }}
+    Изменить продукт
 @endsection
 
 @section('content')

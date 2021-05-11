@@ -31,11 +31,7 @@
     </select>
 </div>
 <div class="form-group">
-    @if($product->active===1)
-        <input type="checkbox" name="active" id="active" checked>
-    @else
-        <input type="checkbox" name="active" id="active">
-    @endif
+        <input type="checkbox" name="active" id="active" {{old('active',isset($product) ? ($product->active?"checked":'') : '' )}}>
     <label for="active">Показывать клиентам</label>
 </div>
 

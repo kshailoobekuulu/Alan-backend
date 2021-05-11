@@ -7,6 +7,7 @@ use App\Models\Category;
 use http\Env\Url;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
@@ -42,11 +43,33 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|max:100',
+            'slug' => 'required|regex:/^[a-zA-Z][a-zA-Z\-\_]*[a-zA-Z]$/|max:100|unique:categories,slug',
+            'photo' => 'image|required',
+            'category_icon' => 'image|required',
+        ]);
         $category = new Category();
         $category->name = $request->name;
         $category->slug = $request->slug;
-        $category->category_icon = $request->category_icon;
-        $category->photo = $request->photo;
+
+        $image = Image::make($request->photo);
+        $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+        $path = public_path(Category::IMAGES_PATH);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $image->save($path . $name);
+        $category->photo = Category::IMAGES_PATH . $name;
+
+        $image = Image::make($request->category_icon);
+        $name = time() . '.' . $request->file('category_icon')->getClientOriginalExtension();
+        $path = public_path(Category::IMAGES_PATH);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $image->save($path . $name);
+        $category->category_icon = Category::IMAGES_PATH . $name;
         $category->save();
         $category->products()->attach($request->products);
         return redirect(route('categories.index')) -> with('success', 'Категория добавлена успешно');
@@ -73,12 +96,42 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|max:100',
+            'slug' => 'required|regex:/^[a-zA-Z][a-zA-Z\-\_]*[a-zA-Z]$/|max:100|unique:categories,slug'.','.$id,
+            'photo' => 'image',
+            'category_icon' => 'image',
+        ]);
         $category = Category::find($id);
-        $category->update($request->only(['name','slug','category_icon','photo']));
+        $image = null;
+        if ($request->hasfile('photo')) {
+            $image = Image::make($request->photo);
+            $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $path = public_path(Category::IMAGES_PATH);
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $image->save($path . $name);
+        }
+        if ($image) {
+            $category->photo = Category::IMAGES_PATH . $name;
+        }
+        $image = null;
+        if ($request->hasfile('category_icon')) {
+            $image = Image::make($request->category_icon);
+            $name = time() . '.' . $request->file('category_icon')->getClientOriginalExtension();
+            $path = public_path(Category::IMAGES_PATH);
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $image->save($path . $name);
+        }
+        if ($image) {
+            $category->category_icon = Category::IMAGES_PATH . $name;
+        }
+        $category->update($request->only(['name','slug']));
         $category->save();
 
-        $category->products()->detach($request->products);
-        $category->products()->attach($request->products);
         return redirect(route('categories.index')) -> with('success', 'Категория изменен успешно');
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -12,11 +13,28 @@ class OrderController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('products')->get();
-        return view('admin.orders.index' , ['orders' => $orders, 'quantity' => 5]);
+        $query = Order::where(function ($q) use($request){
+            $q->where('phone', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('address', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('additional_information', 'LIKE', '%' . $request->q . '%');
+        })->orderBy('created_at', 'desc');
+        if ($request->status) {
+            $query = $query->where('status', $request->status);
+        }
+        if ($request->date) {
+            $dayAfter = (new \DateTime($request->date))->modify('+1 day')->format('Y-m-d');
+            $query->where('created_at', '<', $dayAfter)->where('created_at', '>=', $request->date);
+        } else {
+            $today = Carbon::now()->format('Y-m-d');
+            $dayAfter = (new \DateTime($today))->modify('+1 day')->format('Y-m-d');
+            $query->where('created_at', '<', $dayAfter)->where('created_at', '>=', $today);
+        }
+        $orders = $query->paginate(10);
+        return view('admin.orders.index' , ['orders' => $orders, 'quantity' => $orders->total()]);
     }
 
     /**
@@ -48,7 +66,12 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = Order::find($id);
+        return view('admin.orders.show', [
+            'order' => $order,
+            'products' =>$order->products,
+            'actions' =>$order->actions,
+        ]);
     }
 
     /**
@@ -71,7 +94,21 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $order = Order::find($id);
+        $products = $order->products;
+        $actions = $order->actions;
+        $order->update($request->only('additional_information', 'status', 'address'));
+//        $order->additional_information = $request->input('additional_information');
+//        $order->status = $request->input('status');
+//        $order->address = $request->input('address');
+//        $total_price = 0;
+//        foreach($products as $product){
+//            $product->pivot->quantity = $request->quantity[$product->id];
+//            $product->pivot->save();
+//            $total_price += $product->pivot->quantity * $product->price;
+//        }
+//        $order->total_price = $total_price;
+        $order->save();
     }
 
     /**

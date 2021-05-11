@@ -1,16 +1,16 @@
 @extends('admin.layout')
 
 @section('header')
-    Изменить баннер
+    Изменить акцию
 @endsection
 
 @section('content')
 
-    <form action="{{ route( 'banners.update', $banner->id ) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route( 'actions.update', $action->id ) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
-    @include('admin.banners.form')
+    @include('admin.actions.form')
 
         <input type="submit" class="btn btn-success">
     </form>

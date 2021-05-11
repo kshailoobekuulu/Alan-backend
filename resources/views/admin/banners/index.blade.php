@@ -25,7 +25,7 @@
                     <th scope="row">{{ $banner->description }}</th>
                     <td>{{ $banner->title   }}</td>
                     <td>
-                        <img src="{{ $banner->photo }}"
+                        <img src="{{ asset($banner->photo) }}"
                              width="70"
                              height="50" />
                     </td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use Illuminate\Http\Request;
 
 class ActionController extends Controller
@@ -14,7 +15,10 @@ class ActionController extends Controller
      */
     public function index()
     {
-        //
+        $actions = Action::all();
+        return view('admin.actions.index', [
+            'actions' => $actions,
+        ]);
     }
 
     /**
@@ -24,7 +28,7 @@ class ActionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.actions.create');
     }
 
     /**
@@ -35,7 +39,12 @@ class ActionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        $request->validate([
+//            'price' => ['required', 'regex:/^[1-9][0-9]*/'],
+//            'title' => 'required|max:100',
+//            'photo' => 'image|required',
+//        ]);
+
     }
 
     /**

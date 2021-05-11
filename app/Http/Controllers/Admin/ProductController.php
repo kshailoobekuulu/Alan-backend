@@ -55,10 +55,11 @@ class ProductController extends Controller
         $product = new Product();
         if ($request->active) {
             $product->active = true;
+        }else {
+            $product->active = false;
         }
         $product->name = $request->name;
         $product->price = $request->price;
-        $product->photo = $request->photo;
         $image = Image::make($request->photo);
         $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
         $path = public_path(Product::IMAGES_PATH);
@@ -108,8 +109,8 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'name' => 'required|max:100',
             'price' => ['required', 'regex:/^[1-9][0-9]*/'],
-            'photo' => 'image|required',
             'photo' => 'image',
 
         ]);
@@ -127,6 +128,8 @@ class ProductController extends Controller
         $product->update(\request()->only('name','price'));
         if ($request->active) {
             $product->active = true;
+        }else {
+            $product->active = false;
         }
         if ($image) {
             $product->photo = Product::IMAGES_PATH . $name;

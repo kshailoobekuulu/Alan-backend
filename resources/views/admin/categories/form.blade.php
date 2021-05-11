@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="name">Имя</label>
-    <input type="text" value="{{old('title', isset($category) ? $category->name : '')}}" class="form-control" placeholder="Имя" id="name" name="name">
+    <input type="text" value="{{old('name', isset($category) ? $category->name : '')}}" class="form-control" placeholder="Имя" id="name" name="name">
 </div>
 <div class="form-group">
     <label for="slug">Слаг</label>
@@ -12,7 +12,7 @@
 </div>
 <div class="form-group">
     <label for="photo">Изображение</label>
-    <input type="file" name="photo" value="" class="form-control" id="photo" >
+    <input type="file" name="photo" class="form-control" id="photo">
 </div>
 <div class="form-group">
     <label for="product">Продукты</label>
