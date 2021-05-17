@@ -31,35 +31,38 @@
                         Общая сумма: <span class="total-product-price-span">{{ $product->price * $product->pivot->quantity }}</span> сом
                     </div>
                     <div class="col-12 col-lg-1 text-right">
-                        <button type="button" data-order="{{$order->id}}" data-product="{{$product->id}}" class="btn btn-outline-danger">Удалить</button>
+                        <button type="button" data-order="{{$order->id}}" data-product="{{$product->id}}" class="btn btn-outline-danger remove-product-data">Удалить</button>
                     </div>
                 </div>
             @endforeach
             <h3><u>Акции</u></h3>
-            @foreach($actions as $action)
+            @foreach($actions as $key => $action)
                 <div class="row shadow-sm  pt-3 pb-3 mb-2 justify-content-center">
                     <div class="col-12 col-lg-3">
                         <h5 class="align-middle d-inline-block mb-lg-0 mb-2">{{ $action->title }}</h5>
                     </div>
                     <div class="col-12 col-lg-2 p-lg-0">
-                        <span class="">Цена: {{$action->price}} сом</span>
+                        <span class="action-price-{{$key}}">Цена: {{$action->price}} сом</span>
                     </div>
                     <div class="col-12 col-lg-3 p-lg-0">
                         Количество:
                         {{--                        {{ Form::number('quantity['."$product->id".']', $product->pivot->quantity, ['class' => ' quantity-input', 'min' => 1]) }}--}}
-                        <input type="number" name="'quantityA['.{{$action->id}}.']'" value="{{$action->pivot->quantity}}" class="quantity-input" min="1">
+                        <input type="hidden" name="actions[{{$key}}][id]" value="{{$action->id}}">
+                        <input type="number" name="actions[{{$key}}][quantity]"
+                               data-price="{{$action->price}}" data-key="{{$key}}" value="{{$action->pivot->quantity}}"
+                               class="form-control change-action-quantity" min="1">
                     </div>
-                    <div class="col-12 col-lg-3 p-lg-0">
-                        Общая сумма: {{ $action->price * $action->pivot->quantity }} сом
+                    <div class="col-12 col-lg-3 p-lg-0 total-action-price-{{$key}}">
+                        Общая сумма: <span class="total-action-price-span">{{ $action->price * $action->pivot->quantity }}</span> сом
                     </div>
                     <div class="col-12 col-lg-1 text-right">
                         <button type="button" data-order="{{$order->id}}" data-action="{{$action->id}}" class="btn btn-outline-danger">Удалить</button>
                     </div>
                 </div>
             @endforeach
-                <br>
-            <h5>Общая сумма: {{ $order->total_price }} сом</h5>
-                <br><br>
+            <div class="total-total-price">
+            <h5>Общая сумма: <span class="total-total-price-span">{{ $order->total_price }}</span> сом</h5><br>
+            </div>
         </div>
         <div class="form-group">
             <label for="additional_information">Дополнительная информация</label>
@@ -84,9 +87,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
-        let allProductTotalPrice = 0;
         let actionTotalPrice = 0;
         let allTotalPrice = 0;
+        let allProductTotalPrice = 0;
+        $(document).on('click', '.remove-product-data', function () {
+            $(this).parent().remove();
+        });
 
         $( ".change-product-quantity" ).change(function() {
             var newQuantity = parseInt($(this).val());
@@ -97,37 +103,51 @@
                 productPrice * newQuantity
             +'</span>  сом');
 
+            allProductTotalPrice = 0;
+            allTotalPrice = 0;
             $('span.total-product-price-span').each(function () {
-                var spn = $(this);
                 allProductTotalPrice += parseInt($(this).text());
+                // console.log(allProductTotalPrice);
             });
-
-            allTotalPrice += allProductTotalPrice + actionTotalPrice;
-
-
+            if (actionTotalPrice === 0) {
+                $('span.total-action-price-span').each(function () {
+                    actionTotalPrice += parseInt($(this).text());
+                    // console.log(actionTotalPrice);
+                });
+            }
+            allTotalPrice += actionTotalPrice+allProductTotalPrice;
+            // console.log(allTotalPrice);
+            $('.form-main').find('.total-total-price').html('<h5>Общая сумма: <span class="total-total-price-span">'+
+                allTotalPrice
+                +'</span>  сом</h5>');
         });
 
 
         $( ".change-action-quantity" ).change(function() {
             var newQuantity = parseInt($(this).val());
-            var productPrice = parseInt($(this).attr('data-price'));
+            var actionPrice = parseInt($(this).attr('data-price'));
             var index = $(this).attr('data-key');
 
-            $('.form-main').find('.total-product-price-'+index).html('Общая сумма: <span class="total-product-price-span">'+
-                productPrice * newQuantity
+            $('.form-main').find('.total-action-price-'+index).html('Общая сумма: <span class="total-action-price-span">'+
+                actionPrice * newQuantity
                 +'</span>  сом');
-
+            actionTotalPrice = 0;
+            allTotalPrice = 0;
             $('span.total-action-price-span').each(function () {
-                var spn = $(this);
                 actionTotalPrice += parseInt($(this).text());
+                // console.log(actionTotalPrice);
             });
-
-            allTotalPrice += allProductTotalPrice + actionTotalPrice;
-
-        });
-
-        $( document ).ready(function() {
-
+            if (allProductTotalPrice === 0) {
+                $('span.total-product-price-span').each(function () {
+                    allProductTotalPrice += parseInt($(this).text());
+                    // console.log(allProductTotalPrice);
+                });
+            }
+            allTotalPrice += actionTotalPrice+allProductTotalPrice;
+            // console.log(allTotalPrice);
+            $('.form-main').find('.total-total-price').html('<h5>Общая сумма: <span class="total-total-price-span">'+
+                allTotalPrice
+                +'</span>  сом</h5>');
         });
 
     </script>
