@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -82,7 +83,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -94,10 +95,25 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order = Order::find($id);
-        $products = $order->products;
-        $actions = $order->actions;
+        return dd($request);
+        try {
+            $order = Order::find($id);
+        } catch(QueryException $e){
+            return back()->withErrors('Невозможно найти заказ.');
+        }
         $order->update($request->only('additional_information', 'status', 'address'));
+
+
+        $order->products()->detach($order->products);
+        $order->actions()->detach($order->actions);
+        foreach ($request->products as $product) {
+            $order->products()->attach([$product->id => ['quantity' => $product->quantity]]);
+        }
+        foreach ($request->actions as $action) {
+            $order->actions()->attach([$action->id => ['quantity' => $action->quantity]]);
+        }
+
+//        $order->update($request->only('additional_information', 'status', 'address'));
 //        $order->additional_information = $request->input('additional_information');
 //        $order->status = $request->input('status');
 //        $order->address = $request->input('address');

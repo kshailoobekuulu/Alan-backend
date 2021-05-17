@@ -10,6 +10,7 @@
         @csrf
         <div class="m-3 form-main">
             <h3><u>Продукты</u></h3>
+            <hr>
 
             @foreach($products as $key => $product)
                 <div class="row shadow-sm  pt-3 pb-3 mb-2 justify-content-center">
@@ -30,12 +31,13 @@
                     <div class="col-12 col-lg-3 p-lg-0 total-product-price-{{$key}}">
                         Общая сумма: <span class="total-product-price-span">{{ $product->price * $product->pivot->quantity }}</span> сом
                     </div>
-                    <div class="col-12 col-lg-1 text-right">
+{{--                    <div class="col-12 col-lg-1 text-right">--}}
                         <button type="button" data-order="{{$order->id}}" data-product="{{$product->id}}" class="btn btn-outline-danger remove-product-data">Удалить</button>
-                    </div>
+{{--                    </div>--}}
                 </div>
             @endforeach
             <h3><u>Акции</u></h3>
+            <hr>
             @foreach($actions as $key => $action)
                 <div class="row shadow-sm  pt-3 pb-3 mb-2 justify-content-center">
                     <div class="col-12 col-lg-3">
@@ -55,9 +57,9 @@
                     <div class="col-12 col-lg-3 p-lg-0 total-action-price-{{$key}}">
                         Общая сумма: <span class="total-action-price-span">{{ $action->price * $action->pivot->quantity }}</span> сом
                     </div>
-                    <div class="col-12 col-lg-1 text-right">
-                        <button type="button" data-order="{{$order->id}}" data-action="{{$action->id}}" class="btn btn-outline-danger">Удалить</button>
-                    </div>
+{{--                    <div class="col-12 col-lg-1 text-right">--}}
+                        <button type="button" data-order="{{$order->id}}" data-action="{{$action->id}}" class="btn btn-outline-danger remove-product-data">Удалить</button>
+{{--                    </div>--}}
                 </div>
             @endforeach
             <div class="total-total-price">
