@@ -20,7 +20,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Order::where(function ($q) use($request){
+        $query = Order::where(function ($q) use ($request) {
             $q->where('phone', 'LIKE', '%' . $request->q . '%')
                 ->orWhere('address', 'LIKE', '%' . $request->q . '%')
                 ->orWhere('additional_information', 'LIKE', '%' . $request->q . '%');
@@ -37,7 +37,7 @@ class OrderController extends Controller
             $query->where('created_at', '<', $dayAfter)->where('created_at', '>=', $today);
         }
         $orders = $query->paginate(10);
-        return view('admin.orders.index' , ['orders' => $orders, 'quantity' => $orders->total()]);
+        return view('admin.orders.index', ['orders' => $orders, 'quantity' => $orders->total()]);
     }
 
     /**
@@ -53,7 +53,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -64,7 +64,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -72,15 +72,15 @@ class OrderController extends Controller
         $order = Order::find($id);
         return view('admin.orders.show', [
             'order' => $order,
-            'products' =>$order->products,
-            'actions' =>$order->actions,
+            'products' => $order->products,
+            'actions' => $order->actions,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -91,8 +91,8 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -100,35 +100,39 @@ class OrderController extends Controller
         $total_price = 0;
         try {
             $order = Order::find($id);
-        } catch(QueryException $e){
+        } catch (QueryException $e) {
             return back()->withErrors('Невозможно найти заказ.');
         }
         $productsId = [];
         $actionsId = [];
         $total_price = 0;
-        foreach ($request['products'] as $product) {
-            $productsId[] = $product['id'];
+        if ($request['products']) {
+            foreach ($request['products'] as $product) {
+                $productsId[] = $product['id'];
+            }
         }
-        foreach ($request['actions'] as $action) {
-            $actionsId[] = $action['id'];
+        if ($request['actions']) {
+            foreach ($request['actions'] as $action) {
+                $actionsId[] = $action['id'];
+            }
         }
         $productsDB = Product::find($productsId);
         $actionsDB = Action::find($actionsId);
-//        return dd($productsDB);
-//        return ['products' => $productsDB,
-//            'actions' => $actionsDB];
-//        return dd($request['products']);
-        foreach ($actionsDB as $actionDB) {
-            foreach ($request['actions'] as $action) {
-                if($action['id'] == $actionDB->id) {
-                    $total_price += ($actionDB->price) * ($action['quantity']);
+        if ($request['actions']) {
+            foreach ($actionsDB as $actionDB) {
+                foreach ($request['actions'] as $action) {
+                    if ($action['id'] == $actionDB->id) {
+                        $total_price += ($actionDB->price) * ($action['quantity']);
+                    }
                 }
             }
         }
-        foreach ($productsDB as $productDB) {
-            foreach ($request['products'] as $product) {
-                if($product['id'] == $productDB->id) {
-                    $total_price += ($productDB->price) * ($product['quantity']);
+        if ($request['products']) {
+            foreach ($productsDB as $productDB) {
+                foreach ($request['products'] as $product) {
+                    if ($product['id'] == $productDB->id) {
+                        $total_price += ($productDB->price) * ($product['quantity']);
+                    }
                 }
             }
         }
@@ -139,24 +143,33 @@ class OrderController extends Controller
 
         $order->products()->detach($order->products);
         $order->actions()->detach($order->actions);
-        foreach ($request->products as $product) {
-            $order->products()->attach([$product['id'] => ['quantity' => $product['quantity']]]);
+        if ($request->products) {
+            foreach ($request->products as $product) {
+                $order->products()->attach([$product['id'] => ['quantity' => $product['quantity']]]);
+            }
         }
-        foreach ($request->actions as $action) {
-            $order->actions()->attach([$action['id'] => ['quantity' => $action['quantity']]]);
+        if ($request->actions) {
+            foreach ($request->actions as $action) {
+                $order->actions()->attach([$action['id'] => ['quantity' => $action['quantity']]]);
+            }
         }
-        return redirect(route('orders.index')) -> with('success', 'Заказ изменен успешно');
-        $order->save();
+        return redirect(route('orders.index'))->with('success', 'Заказ изменен успешно');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $order = Order::find($id);
+        try {
+            $order->delete();
+        } catch (QueryException $e) {
+            return back()->withErrors('Невозможно удалить заказ.');
+        }
+        return redirect(route('orders.index'))->with('success', 'Заказ успешно удален');
     }
 }

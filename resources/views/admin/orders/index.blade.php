@@ -80,8 +80,9 @@
             </div>
             <div class="col-lg-1 p-0">
                 <div class="text-right mt-lg-2">
-                    <form action="{{route("orders.destroy", $order->id)}}" method="post" class="d-inline-block delete-order align-middle">
+                    <form action="{{route('orders.destroy', $order->id)}}" method="post" class="d-inline-block align-middle">
                         @method('DELETE')
+                        @csrf
                         <button type="submit" class="btn btn-success color-black align-middle" style="margin-right: 5px; margin-top: 30px">Удалить</button>
                     </form>
                 </div>

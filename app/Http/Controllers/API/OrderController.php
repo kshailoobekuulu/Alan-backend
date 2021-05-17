@@ -75,25 +75,33 @@ class OrderController extends Controller
         $productsId = [];
         $actionsId = [];
         $total_price = 0;
-        foreach ($request['products'] as $product) {
-            $productsId[] = $product['id'];
+        if ($request['products']) {
+            foreach ($request['products'] as $product) {
+                $productsId[] = $product['id'];
+            }
         }
-        foreach ($request['actions'] as $action) {
-            $actionsId[] = $action['id'];
+        if ($request['actions']) {
+            foreach ($request['actions'] as $action) {
+                $actionsId[] = $action['id'];
+            }
         }
         $productsDB = Product::find($productsId);
         $actionsDB = Action::find($actionsId);
-        foreach ($actionsDB as $actionDB) {
-            foreach ($request['actions'] as $action) {
-                if($action['id'] === $actionDB->id) {
-                    $total_price += ($actionDB->price) * ($action['quantity']);
+        if ($request['actions']) {
+            foreach ($actionsDB as $actionDB) {
+                foreach ($request['actions'] as $action) {
+                    if ($action['id'] === $actionDB->id) {
+                        $total_price += ($actionDB->price) * ($action['quantity']);
+                    }
                 }
             }
         }
-        foreach ($productsDB as $productDB) {
-            foreach ($request['products'] as $product) {
-                if($product['id'] === $productDB->id) {
-                    $total_price += ($productDB->price) * ($product['quantity']);
+        if ($request['products']) {
+            foreach ($productsDB as $productDB) {
+                foreach ($request['products'] as $product) {
+                    if($product['id'] === $productDB->id) {
+                        $total_price += ($productDB->price) * ($product['quantity']);
+                    }
                 }
             }
         }
@@ -103,17 +111,21 @@ class OrderController extends Controller
         $order->total_price = $total_price;
         $order->status = 'in_progress';
         $order->save();
-        foreach ($actionsDB as $actionDB) {
-            foreach ($request['actions'] as $action) {
-                if($action['id'] === $actionDB->id) {
-                    $order->actions()->attach([$actionDB->id => ['quantity' => $action['quantity']]]);
+        if ($request['actions']) {
+            foreach ($actionsDB as $actionDB) {
+                foreach ($request['actions'] as $action) {
+                    if($action['id'] === $actionDB->id) {
+                        $order->actions()->attach([$actionDB->id => ['quantity' => $action['quantity']]]);
+                    }
                 }
             }
         }
-        foreach ($productsDB as $productDB) {
-            foreach ($request['products'] as $product) {
-                if($product['id'] === $productDB->id) {
-                    $order->products()->attach([$productDB->id => ['quantity' => $product['quantity']]]);
+        if ($request['products']) {
+            foreach ($productsDB as $productDB) {
+                foreach ($request['products'] as $product) {
+                    if($product['id'] === $productDB->id) {
+                        $order->products()->attach([$productDB->id => ['quantity' => $product['quantity']]]);
+                    }
                 }
             }
         }

@@ -148,6 +148,6 @@ class ActionController extends Controller
         } catch(QueryException $e){
             return back()->withErrors('Невозможно удалить акцию.');
         }
-        return redirect(route('actions.index')) -> with('success', 'Акция успешно удален');
+        return redirect(route('actions.index')) -> with('success', 'Акция успешно удалена');
     }
 }
