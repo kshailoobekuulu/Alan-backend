@@ -9,11 +9,11 @@
         <form action="{{route('orders.index')}}" method="get">
                 <div class="row p-3 filter-bg">
                     <div class="col-md-4 p-0">
-                        <input type="text" name="q" class="form-control" value="{{request()->q}}">
+                        <input type="text" placeholder="Поиск..." name="q" class="form-control" value="{{request()->q}}">
                     </div>
                     <div class="col-md-4 p-0 pl-md-2 mt-2 mt-md-0">
                         <select name="status" class="form-control">
-                             <option value="" {{ request()->status === "all" ? "selected" : ""}}>Все</option>
+                            <option value="" {{ request()->status === "all" ? "selected" : ""}}>Все</option>
                             <option value="waiting" {{ request()->status === "waiting" ? "selected" : ""}}>В ожидании</option>
                             <option value="in_progress" {{ request()->status === "in_progress" ? "selected" : ""}}>В процессе</option>
                             <option value="on_its_way" {{ request()->status === "on_its_way" ? "selected" : ""}}>В пути</option>

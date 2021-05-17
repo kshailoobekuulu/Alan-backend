@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Action;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ActionController extends Controller
 {
@@ -39,12 +41,31 @@ class ActionController extends Controller
      */
     public function store(Request $request)
     {
-//        $request->validate([
-//            'price' => ['required', 'regex:/^[1-9][0-9]*/'],
-//            'title' => 'required|max:100',
-//            'photo' => 'image|required',
-//        ]);
-
+        $request->validate([
+            'price' => ['required', 'regex:/^[1-9][0-9]*/'],
+            'title' => 'required|max:100',
+            'photo' => 'image|required',
+        ]);
+        $action = new Action();
+        $action->price = $request->price;
+        $action->title = $request->title;
+        $image = Image::make($request->photo);
+        $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+        $path = public_path(Action::IMAGES_PATH);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $image->save($path . $name);
+        $action->photo = Action::IMAGES_PATH . $name;
+        $action->save();
+        foreach ($request->product as $item) {
+            try {
+                $action->products()->attach([$item['product'] => ['quantity' => $item['quantity']]]);
+            } catch(QueryException $e){
+                continue;
+            }
+        }
+        return $this->index();
     }
 
     /**
@@ -66,7 +87,8 @@ class ActionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $action = Action::findOrFail($id);
+        return view('admin.actions.edit', compact('action'));
     }
 
     /**
@@ -78,7 +100,38 @@ class ActionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'price' => ['required', 'regex:/^[1-9][0-9]*/'],
+            'title' => 'required|max:100',
+            'photo' => 'image',
+
+        ]);
+        $image = null;
+        if ($request->hasfile('photo')) {
+            $image = Image::make($request->photo);
+            $name = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $path = public_path(Action::IMAGES_PATH);
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $image->save($path . $name);
+        }
+        $action = Action::find($id);
+        $action->update(\request()->only('price','title'));
+        if ($image) {
+            $action->photo = Action::IMAGES_PATH . $name;
+        }
+        $action->save();
+        $action->products()->detach($action->products);
+        foreach ($request->product as $item) {
+            try {
+                $action->products()->attach([$item['product'] => ['quantity' => $item['quantity']]]);
+            } catch(QueryException $e){
+                continue;
+            }
+        }
+
+        return redirect(route('actions.index')) -> with('success', 'Акция изменена успешно');
     }
 
     /**
@@ -89,6 +142,12 @@ class ActionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $action = Action::find($id);
+        try {
+            $action->delete();
+        } catch(QueryException $e){
+            return back()->withErrors('Невозможно удалить акцию.');
+        }
+        return redirect(route('actions.index')) -> with('success', 'Акция успешно удален');
     }
 }
