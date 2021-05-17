@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use App\Models\Order;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -95,35 +97,55 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return dd($request);
+        $total_price = 0;
         try {
             $order = Order::find($id);
         } catch(QueryException $e){
             return back()->withErrors('Невозможно найти заказ.');
         }
-        $order->update($request->only('additional_information', 'status', 'address'));
+        $productsId = [];
+        $actionsId = [];
+        $total_price = 0;
+        foreach ($request['products'] as $product) {
+            $productsId[] = $product['id'];
+        }
+        foreach ($request['actions'] as $action) {
+            $actionsId[] = $action['id'];
+        }
+        $productsDB = Product::find($productsId);
+        $actionsDB = Action::find($actionsId);
+//        return dd($productsDB);
+//        return ['products' => $productsDB,
+//            'actions' => $actionsDB];
+//        return dd($request['products']);
+        foreach ($actionsDB as $actionDB) {
+            foreach ($request['actions'] as $action) {
+                if($action['id'] == $actionDB->id) {
+                    $total_price += ($actionDB->price) * ($action['quantity']);
+                }
+            }
+        }
+        foreach ($productsDB as $productDB) {
+            foreach ($request['products'] as $product) {
+                if($product['id'] == $productDB->id) {
+                    $total_price += ($productDB->price) * ($product['quantity']);
+                }
+            }
+        }
 
+        $order->update($request->only('additional_information', 'status', 'address'));
+        $order->total_price = $total_price;
+        $order->save();
 
         $order->products()->detach($order->products);
         $order->actions()->detach($order->actions);
         foreach ($request->products as $product) {
-            $order->products()->attach([$product->id => ['quantity' => $product->quantity]]);
+            $order->products()->attach([$product['id'] => ['quantity' => $product['quantity']]]);
         }
         foreach ($request->actions as $action) {
-            $order->actions()->attach([$action->id => ['quantity' => $action->quantity]]);
+            $order->actions()->attach([$action['id'] => ['quantity' => $action['quantity']]]);
         }
-
-//        $order->update($request->only('additional_information', 'status', 'address'));
-//        $order->additional_information = $request->input('additional_information');
-//        $order->status = $request->input('status');
-//        $order->address = $request->input('address');
-//        $total_price = 0;
-//        foreach($products as $product){
-//            $product->pivot->quantity = $request->quantity[$product->id];
-//            $product->pivot->save();
-//            $total_price += $product->pivot->quantity * $product->price;
-//        }
-//        $order->total_price = $total_price;
+        return redirect(route('orders.index')) -> with('success', 'Заказ изменен успешно');
         $order->save();
     }
 

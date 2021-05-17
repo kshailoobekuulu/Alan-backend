@@ -68,7 +68,7 @@
         </div>
         <div class="form-group">
             <label for="additional_information">Дополнительная информация</label>
-            <input type="text" name="name" class="form-control col-12 col-md col-md-4 mb-2" value="{{$order->additional_information?$order->additional_information:''}}" id="additional_information">
+            <input type="text" name="additional_information" class="form-control col-12 col-md col-md-4 mb-2" value="{{$order->additional_information?$order->additional_information:''}}" id="additional_information">
         </div>
         <div class="form-group">
             <label for="address">Адрес</label>
@@ -114,7 +114,6 @@
             if (actionTotalPrice === 0) {
                 $('span.total-action-price-span').each(function () {
                     actionTotalPrice += parseInt($(this).text());
-                    // console.log(actionTotalPrice);
                 });
             }
             allTotalPrice += actionTotalPrice+allProductTotalPrice;
@@ -137,12 +136,10 @@
             allTotalPrice = 0;
             $('span.total-action-price-span').each(function () {
                 actionTotalPrice += parseInt($(this).text());
-                // console.log(actionTotalPrice);
             });
             if (allProductTotalPrice === 0) {
                 $('span.total-product-price-span').each(function () {
                     allProductTotalPrice += parseInt($(this).text());
-                    // console.log(allProductTotalPrice);
                 });
             }
             allTotalPrice += actionTotalPrice+allProductTotalPrice;
@@ -150,6 +147,7 @@
             $('.form-main').find('.total-total-price').html('<h5>Общая сумма: <span class="total-total-price-span">'+
                 allTotalPrice
                 +'</span>  сом</h5>');
+            $('.total-input-value').val();
         });
 
     </script>
