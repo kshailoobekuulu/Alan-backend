@@ -18,10 +18,11 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::where('name', 'like', '%' . $request->q . '%');
-
+//        return $request->category;
         if ($request->category) {
             $query = $query->whereHas('categories', function ($q) use ($request) {
                 $q->where('category_id', $request->category);
+                return $q->toSql();
             });
         }
 
