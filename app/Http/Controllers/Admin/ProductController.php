@@ -135,7 +135,8 @@ class ProductController extends Controller
             $product->photo = Product::IMAGES_PATH . $name;
         }
         $product->save();
-        $product->categories()->detach($request->categories);
+//        return dd($request->categories);
+        $product->categories()->detach($product->categories);
         $product->categories()->attach($request->categories);
         return redirect(route('products.index')) -> with('success', 'Продукт изменен успешно');
     }

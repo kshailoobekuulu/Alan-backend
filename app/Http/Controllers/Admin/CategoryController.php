@@ -131,6 +131,8 @@ class CategoryController extends Controller
         }
         $category->update($request->only(['name','slug']));
         $category->save();
+        $category->products()->detach($category->products);
+        $category->products()->attach($request->products);
 
         return redirect(route('categories.index')) -> with('success', 'Категория изменен успешно');
     }
