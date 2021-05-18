@@ -93,7 +93,18 @@
         let allTotalPrice = 0;
         let allProductTotalPrice = 0;
         $(document).on('click', '.remove-product-data', function () {
+            allTotalPrice = 0;
             $(this).parent().remove();
+            $('span.total-product-price-span').each(function () {
+                allTotalPrice += parseInt($(this).text());
+            });
+            $('span.total-action-price-span').each(function () {
+                allTotalPrice += parseInt($(this).text());
+            });
+            $('.form-main').find('.total-total-price').html('<h5>Общая сумма: <span class="total-total-price-span">'+
+                allTotalPrice
+                +'</span>  сом</h5>');
+            $('.total-input-value').val();
         });
 
         $( ".change-product-quantity" ).change(function() {
